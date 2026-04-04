@@ -15,7 +15,7 @@ export default function Header() {
       <div className="container mx-auto flex h-16 items-center justify-between px-4">
         <div className="flex items-center gap-6">
           <Link href="/" className="flex items-center space-x-2">
-            <span className="text-2xl font-bold tracking-tight text-primary">Hushabye</span>
+            <span className="text-2xl font-serif font-bold tracking-tight text-primary">Hushabye</span>
           </Link>
           <nav className="hidden md:flex items-center gap-6 text-sm font-medium">
             <Link href="/collections/shampoo" className="transition-colors hover:text-primary">Shampoo</Link>

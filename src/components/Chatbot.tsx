@@ -71,7 +71,7 @@ export default function Chatbot() {
                   <Bot className="h-5 w-5" />
                 </div>
                 <div>
-                  <h3 className="font-bold text-sm">Hushabye Assistant</h3>
+                  <h3 className="font-display font-bold text-sm">Hushabye Assistant</h3>
                   <p className="text-[10px] text-white/80">Online | Always here to help</p>
                 </div>
               </div>

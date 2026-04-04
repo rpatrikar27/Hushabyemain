@@ -59,42 +59,43 @@
   ],
   "products": [
     {
-      "name": "Hushabye Milky Soft Baby Shampoo 200ml",
+      "name": "Hushabye Milky Soft Baby Shampoo - 200ml",
       "slug": "hushabye-milky-soft-baby-shampoo-200ml",
       "category_id": "cat-shampoo",
-      "description": "A gentle, tear-free formula enriched with milk protein and oats to nourish your baby's hair and scalp.",
-      "short_description": "Gentle, tear-free baby shampoo.",
-      "price": 499,
-      "compare_at_price": 599,
-      "sku": "HB-SH-200",
+      "description": "Hushabye Milky Soft Baby Shampoo, 200ml, is a gentle, nourishing and tear-free shampoo specially formulated to care for your little one’s delicate scalp and hair. Infused with the natural goodness of milk protein, vitamin B5 and glycerin, this shampoo provides deep nourishment while maintaining the softness and shine of your baby's hair.",
+      "short_description": "Tear Free Formula, 5.5 pH Balanced, with Milk Protein, Vitamin B5 & Glycerin.",
+      "price": 399,
+      "compare_at_price": 499,
+      "sku": "HB-SH-200-MILK",
       "stock_quantity": 100,
       "is_active": true,
       "is_featured": true,
-      "tags": ["shampoo", "tear-free", "milky"],
+      "tags": ["shampoo", "tear-free", "milky", "milk-protein"],
       "images": [
-        { "url": "https://picsum.photos/seed/shampoo1/800/800", "alt": "Milky Soft Baby Shampoo", "position": 1 }
+        { "url": "https://picsum.photos/seed/hushabye-shampoo/800/800", "alt": "Milky Soft Baby Shampoo", "position": 1 }
       ],
       "attributes": [
-        { "key": "Volume", "value": "200ml" }
+        { "key": "Volume", "value": "200ml" },
+        { "key": "pH", "value": "5.5" }
       ],
       "seo_title": "Hushabye Milky Soft Baby Shampoo 200ml - Gentle & Tear-Free",
       "seo_description": "Buy Hushabye Milky Soft Baby Shampoo 200ml. Gentle, tear-free formula for your baby's delicate hair. Enriched with milk protein."
     },
     {
-      "name": "Hushabye Premium Milk Baby Wipes 72pcs",
+      "name": "Hushabye Premium Milk Baby Wipes - 72pcs",
       "slug": "hushabye-premium-milk-baby-wipes-72pcs",
       "category_id": "cat-wipes",
-      "description": "Extra soft wipes infused with milk lotion to clean and moisturize your baby's skin in one go.",
-      "short_description": "Soft milk-infused baby wipes.",
-      "price": 199,
-      "compare_at_price": 249,
-      "sku": "HB-WP-72",
+      "description": "Hushabye Premium Milk Baby Wipes are extra soft and thick, infused with milk lotion to gently clean and moisturize your baby's skin. They are pH balanced, paraben-free, and alcohol-free, making them safe for newborns and sensitive skin.",
+      "short_description": "pH Balanced, Paraben & Alcohol Free, Moisturising & Thick Wipes.",
+      "price": 149,
+      "compare_at_price": 199,
+      "sku": "HB-WP-72-MILK",
       "stock_quantity": 500,
       "is_active": true,
       "is_featured": true,
-      "tags": ["wipes", "milk-infused", "soft"],
+      "tags": ["wipes", "milk-infused", "soft", "gentle"],
       "images": [
-        { "url": "https://picsum.photos/seed/wipes1/800/800", "alt": "Premium Milk Baby Wipes", "position": 1 }
+        { "url": "https://picsum.photos/seed/hushabye-wipes/800/800", "alt": "Premium Milk Baby Wipes", "position": 1 }
       ],
       "attributes": [
         { "key": "Count", "value": "72pcs" }
@@ -103,20 +104,20 @@
       "seo_description": "Hushabye Premium Milk Baby Wipes 72pcs. Infused with milk lotion for gentle cleaning and moisturizing."
     },
     {
-      "name": "Hushabye Cotton Soft Diaper Pants XL 26 Count",
-      "slug": "hushabye-cotton-soft-diaper-pants-xl-26-count",
+      "name": "Hushabye Cotton Soft Baby Diapers Pants - XL",
+      "slug": "hushabye-cotton-soft-baby-diapers-pants-xl-26-count",
       "category_id": "cat-diaper",
-      "description": "High-absorbency diaper pants with a cotton-soft feel and breathable material for all-day comfort.",
-      "short_description": "Cotton soft diaper pants XL.",
-      "price": 399,
-      "compare_at_price": 499,
-      "sku": "HB-DP-XL-26",
+      "description": "Hushabye Cotton Soft Baby Diapers Pants with Aloe Lotion provide up to 12 hours of leakage protection. They are anti-rash, breathable, and feature a 3D Leak Guard and ADL Core for maximum comfort and dryness.",
+      "short_description": "Anti-Rash & Breathable, 12hrs Leakage protection, with Aloe Lotion.",
+      "price": 349,
+      "compare_at_price": 449,
+      "sku": "HB-DP-XL-26-COTTON",
       "stock_quantity": 200,
       "is_active": true,
       "is_featured": true,
-      "tags": ["diaper", "cotton-soft", "XL"],
+      "tags": ["diaper", "cotton-soft", "XL", "anti-rash"],
       "images": [
-        { "url": "https://picsum.photos/seed/diaper1/800/800", "alt": "Cotton Soft Diaper Pants", "position": 1 }
+        { "url": "https://picsum.photos/seed/hushabye-diaper/800/800", "alt": "Cotton Soft Baby Diapers Pants", "position": 1 }
       ],
       "attributes": [
         { "key": "Size", "value": "XL" },
