@@ -1,0 +1,255 @@
+{
+  "categories": [
+    {
+      "id": "cat-shampoo",
+      "name": "Shampoo",
+      "slug": "shampoo",
+      "description": "Gentle and tear-free shampoos for your baby's delicate hair.",
+      "image_url": "https://picsum.photos/seed/shampoo/800/600",
+      "is_active": true
+    },
+    {
+      "id": "cat-diaper",
+      "name": "Diaper",
+      "slug": "diaper",
+      "description": "Premium cotton soft diapers for all-day comfort.",
+      "image_url": "https://picsum.photos/seed/diaper/800/600",
+      "is_active": true
+    },
+    {
+      "id": "cat-lotion",
+      "name": "Lotion",
+      "slug": "lotion",
+      "description": "Moisturizing lotions to keep baby's skin soft and supple.",
+      "image_url": "https://picsum.photos/seed/lotion/800/600",
+      "is_active": true
+    },
+    {
+      "id": "cat-talcum",
+      "name": "Talcum",
+      "slug": "talcum",
+      "description": "Fine dusting powder for a fresh and dry feel.",
+      "image_url": "https://picsum.photos/seed/talcum/800/600",
+      "is_active": true
+    },
+    {
+      "id": "cat-wipes",
+      "name": "Wipes",
+      "slug": "wipes",
+      "description": "Soft and moist wipes for gentle cleaning.",
+      "image_url": "https://picsum.photos/seed/wipes/800/600",
+      "is_active": true
+    },
+    {
+      "id": "cat-wash",
+      "name": "Wash",
+      "slug": "wash",
+      "description": "Mild body wash for a refreshing bath time.",
+      "image_url": "https://picsum.photos/seed/wash/800/600",
+      "is_active": true
+    },
+    {
+      "id": "cat-combo",
+      "name": "Combo",
+      "slug": "combo",
+      "description": "Value packs and gift sets for complete baby care.",
+      "image_url": "https://picsum.photos/seed/combo/800/600",
+      "is_active": true
+    }
+  ],
+  "products": [
+    {
+      "name": "Hushabye Milky Soft Baby Shampoo 200ml",
+      "slug": "hushabye-milky-soft-baby-shampoo-200ml",
+      "category_id": "cat-shampoo",
+      "description": "A gentle, tear-free formula enriched with milk protein and oats to nourish your baby's hair and scalp.",
+      "short_description": "Gentle, tear-free baby shampoo.",
+      "price": 499,
+      "compare_at_price": 599,
+      "sku": "HB-SH-200",
+      "stock_quantity": 100,
+      "is_active": true,
+      "is_featured": true,
+      "tags": ["shampoo", "tear-free", "milky"],
+      "images": [
+        { "url": "https://picsum.photos/seed/shampoo1/800/800", "alt": "Milky Soft Baby Shampoo", "position": 1 }
+      ],
+      "attributes": [
+        { "key": "Volume", "value": "200ml" }
+      ],
+      "seo_title": "Hushabye Milky Soft Baby Shampoo 200ml - Gentle & Tear-Free",
+      "seo_description": "Buy Hushabye Milky Soft Baby Shampoo 200ml. Gentle, tear-free formula for your baby's delicate hair. Enriched with milk protein."
+    },
+    {
+      "name": "Hushabye Premium Milk Baby Wipes 72pcs",
+      "slug": "hushabye-premium-milk-baby-wipes-72pcs",
+      "category_id": "cat-wipes",
+      "description": "Extra soft wipes infused with milk lotion to clean and moisturize your baby's skin in one go.",
+      "short_description": "Soft milk-infused baby wipes.",
+      "price": 199,
+      "compare_at_price": 249,
+      "sku": "HB-WP-72",
+      "stock_quantity": 500,
+      "is_active": true,
+      "is_featured": true,
+      "tags": ["wipes", "milk-infused", "soft"],
+      "images": [
+        { "url": "https://picsum.photos/seed/wipes1/800/800", "alt": "Premium Milk Baby Wipes", "position": 1 }
+      ],
+      "attributes": [
+        { "key": "Count", "value": "72pcs" }
+      ],
+      "seo_title": "Hushabye Premium Milk Baby Wipes 72pcs - Soft & Gentle",
+      "seo_description": "Hushabye Premium Milk Baby Wipes 72pcs. Infused with milk lotion for gentle cleaning and moisturizing."
+    },
+    {
+      "name": "Hushabye Cotton Soft Diaper Pants XL 26 Count",
+      "slug": "hushabye-cotton-soft-diaper-pants-xl-26-count",
+      "category_id": "cat-diaper",
+      "description": "High-absorbency diaper pants with a cotton-soft feel and breathable material for all-day comfort.",
+      "short_description": "Cotton soft diaper pants XL.",
+      "price": 399,
+      "compare_at_price": 499,
+      "sku": "HB-DP-XL-26",
+      "stock_quantity": 200,
+      "is_active": true,
+      "is_featured": true,
+      "tags": ["diaper", "cotton-soft", "XL"],
+      "images": [
+        { "url": "https://picsum.photos/seed/diaper1/800/800", "alt": "Cotton Soft Diaper Pants", "position": 1 }
+      ],
+      "attributes": [
+        { "key": "Size", "value": "XL" },
+        { "key": "Count", "value": "26" }
+      ],
+      "seo_title": "Hushabye Cotton Soft Diaper Pants XL 26 Count - Leak Protection",
+      "seo_description": "Shop Hushabye Cotton Soft Diaper Pants XL 26 Count. Breathable material and high absorbency for your baby's comfort."
+    },
+    {
+      "name": "Hushabye Moisturizing Baby Lotion 200ml",
+      "slug": "hushabye-moisturizing-baby-lotion-200ml",
+      "category_id": "cat-lotion",
+      "description": "Keep your baby's skin hydrated and soft with our non-greasy, fast-absorbing moisturizing lotion.",
+      "short_description": "Non-greasy moisturizing baby lotion.",
+      "price": 399,
+      "compare_at_price": 450,
+      "sku": "HB-LT-200",
+      "stock_quantity": 150,
+      "is_active": true,
+      "is_featured": false,
+      "tags": ["lotion", "moisturizing", "soft-skin"],
+      "images": [
+        { "url": "https://picsum.photos/seed/lotion1/800/800", "alt": "Moisturizing Baby Lotion", "position": 1 }
+      ],
+      "attributes": [
+        { "key": "Volume", "value": "200ml" }
+      ],
+      "seo_title": "Hushabye Moisturizing Baby Lotion 200ml - Soft Skin",
+      "seo_description": "Hushabye Moisturizing Baby Lotion 200ml. Fast-absorbing formula to keep baby's skin soft and hydrated."
+    },
+    {
+      "name": "Hushabye Baby Wash 200ml",
+      "slug": "hushabye-baby-wash-200ml",
+      "category_id": "cat-wash",
+      "description": "A mild and gentle body wash that cleanses without stripping away natural oils.",
+      "short_description": "Mild and gentle baby body wash.",
+      "price": 399,
+      "compare_at_price": 450,
+      "sku": "HB-BW-200",
+      "stock_quantity": 150,
+      "is_active": true,
+      "is_featured": false,
+      "tags": ["wash", "mild", "gentle"],
+      "images": [
+        { "url": "https://picsum.photos/seed/wash1/800/800", "alt": "Baby Wash", "position": 1 }
+      ],
+      "attributes": [
+        { "key": "Volume", "value": "200ml" }
+      ],
+      "seo_title": "Hushabye Baby Wash 200ml - Gentle Cleansing",
+      "seo_description": "Buy Hushabye Baby Wash 200ml. Mild formula for a refreshing and gentle bath time."
+    },
+    {
+      "name": "Hushabye Dusting Powder 100g",
+      "slug": "hushabye-dusting-powder-100g",
+      "category_id": "cat-talcum",
+      "description": "Absorbent dusting powder to keep your baby's skin dry and prevent rashes.",
+      "short_description": "Absorbent baby dusting powder.",
+      "price": 299,
+      "compare_at_price": 350,
+      "sku": "HB-PW-100",
+      "stock_quantity": 300,
+      "is_active": true,
+      "is_featured": false,
+      "tags": ["powder", "dusting", "dry"],
+      "images": [
+        { "url": "https://picsum.photos/seed/powder1/800/800", "alt": "Dusting Powder", "position": 1 }
+      ],
+      "attributes": [
+        { "key": "Weight", "value": "100g" }
+      ],
+      "seo_title": "Hushabye Dusting Powder 100g - Fresh & Dry",
+      "seo_description": "Hushabye Dusting Powder 100g. Keeps baby's skin dry and fresh throughout the day."
+    },
+    {
+      "name": "Combo: Wash + Shampoo + Talcum (3-pack)",
+      "slug": "combo-wash-shampoo-talcum-3-pack",
+      "category_id": "cat-combo",
+      "description": "A complete bath time set including our gentle wash, tear-free shampoo, and absorbent dusting powder.",
+      "short_description": "Essential bath time combo pack.",
+      "price": 1397,
+      "compare_at_price": 1599,
+      "sku": "HB-CB-3",
+      "stock_quantity": 50,
+      "is_active": true,
+      "is_featured": true,
+      "tags": ["combo", "gift-set", "bath-time"],
+      "images": [
+        { "url": "https://picsum.photos/seed/combo1/800/800", "alt": "Bath Time Combo Pack", "position": 1 }
+      ],
+      "attributes": [
+        { "key": "Pack Size", "value": "3-pack" }
+      ],
+      "seo_title": "Hushabye Bath Time Combo Pack - Wash, Shampoo, Talcum",
+      "seo_description": "Get the Hushabye Bath Time Combo Pack. Includes Baby Wash, Shampoo, and Dusting Powder for complete care."
+    },
+    {
+      "name": "Combo: Lotion + Wash + Shampoo + Talcum (4-pack)",
+      "slug": "combo-lotion-wash-shampoo-talcum-4-pack",
+      "category_id": "cat-combo",
+      "description": "Our ultimate baby care set featuring lotion, wash, shampoo, and talcum powder for complete skin and hair care.",
+      "short_description": "Ultimate baby care combo pack.",
+      "price": 1896,
+      "compare_at_price": 2199,
+      "sku": "HB-CB-4",
+      "stock_quantity": 50,
+      "is_active": true,
+      "is_featured": true,
+      "tags": ["combo", "ultimate-set", "skin-care"],
+      "images": [
+        { "url": "https://picsum.photos/seed/combo2/800/800", "alt": "Ultimate Baby Care Combo Pack", "position": 1 }
+      ],
+      "attributes": [
+        { "key": "Pack Size", "value": "4-pack" }
+      ],
+      "seo_title": "Hushabye Ultimate Baby Care Combo Pack - 4 Essential Products",
+      "seo_description": "Buy the Hushabye Ultimate Baby Care Combo Pack. Features Lotion, Wash, Shampoo, and Talcum for total care."
+    }
+  ],
+  "banners": [
+    {
+      "title": "Gentle Care for Your Little One",
+      "subtitle": "Discover our range of premium baby care products.",
+      "image_url": "https://picsum.photos/seed/hero1/1920/1080",
+      "link_url": "/collections/all",
+      "position": "hero",
+      "is_active": true
+    }
+  ],
+  "site_settings": {
+    "store_name": "Hushabye",
+    "contact_email": "support@hushabye.in",
+    "free_shipping_threshold": 499,
+    "shipping_flat_rate": 49
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "name": "Hushabye - Premium Baby Care",
+  "description": "Premium Indian baby care brand selling Diapers, Shampoo, Lotion, Wipes, and more. Gentle care for your little ones.",
+  "requestFramePermissions": [
+    "geolocation"
+  ]
+}
