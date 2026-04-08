@@ -25,6 +25,12 @@ const nextConfig: NextConfig = {
       },
       {
         protocol: 'https',
+        hostname: 'hushabye.in',
+        port: '',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
         hostname: 'cdn.shopify.com',
         port: '',
         pathname: '/**',

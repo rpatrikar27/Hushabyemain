@@ -8,52 +8,128 @@ import Header from '@/src/components/layout/Header';
 import Footer from '@/src/components/layout/Footer';
 import { Button } from '@/src/components/ui/Button';
 import { useCartStore } from '@/src/store/cartStore';
-import { loadRazorpay } from '@/src/lib/razorpay';
+import { useAuthStore } from '@/src/store/authStore';
+import { loadRazorpay, createRazorpayOrder } from '@/src/lib/razorpay';
+import { orderService, OrderData } from '@/src/services/orderService';
 
 export default function CheckoutPage() {
   const router = useRouter();
   const { items, total, clearCart } = useCartStore();
+  const { user } = useAuthStore();
   const [step, setStep] = useState(1);
   const [loading, setLoading] = useState(false);
+  const [formData, setFormData] = useState({
+    fullName: user?.full_name || '',
+    email: user?.email || '',
+    phone: '',
+    address: '',
+    city: '',
+    state: 'Maharashtra',
+    pincode: '',
+  });
 
   const shipping = total >= 499 ? 0 : 49;
   const grandTotal = total + shipping;
 
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
   const handlePayment = async () => {
     setLoading(true);
-    const res = await loadRazorpay();
+    try {
+      const sdkLoaded = await loadRazorpay();
+      if (!sdkLoaded) {
+        throw new Error('Razorpay SDK failed to load');
+      }
 
-    if (!res) {
-      alert('Razorpay SDK failed to load. Are you online?');
+      // 1. Create Razorpay Order on server
+      const rzpOrder = await createRazorpayOrder(grandTotal);
+
+      // 2. Create Order in Supabase
+      const orderNumber = `ORD-${Date.now()}-${Math.random().toString(36).substr(2, 4).toUpperCase()}`;
+      const orderData: OrderData = {
+        customer_id: user?.id,
+        order_number: orderNumber,
+        status: 'pending',
+        payment_status: 'pending',
+        payment_method: 'razorpay',
+        razorpay_order_id: rzpOrder.id,
+        shipping_address: {
+          full_name: formData.fullName,
+          email: formData.email,
+          phone: formData.phone,
+          address_line1: formData.address,
+          city: formData.city,
+          state: formData.state,
+          pincode: formData.pincode,
+        },
+        billing_address: {
+          full_name: formData.fullName,
+          email: formData.email,
+          phone: formData.phone,
+          address_line1: formData.address,
+          city: formData.city,
+          state: formData.state,
+          pincode: formData.pincode,
+        },
+        line_items: items.map((item) => ({
+          product_id: item.id,
+          name: item.name,
+          qty: item.quantity,
+          unit_price: item.price,
+          total: item.price * item.quantity,
+          image: item.image,
+        })),
+        subtotal: total,
+        discount_amount: 0,
+        shipping_amount: shipping,
+        tax_amount: 0,
+        total: grandTotal,
+      };
+
+      const supabaseOrder = await orderService.createOrder(orderData);
+
+      // 3. Open Razorpay Checkout
+      const options = {
+        key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
+        amount: rzpOrder.amount,
+        currency: rzpOrder.currency,
+        name: 'Hushabye',
+        description: 'Order Payment',
+        order_id: rzpOrder.id,
+        handler: async function (response: any) {
+          console.log('Payment successful:', response);
+          
+          // 4. Update order in Supabase
+          await orderService.updateOrder(supabaseOrder.id, {
+            payment_status: 'paid',
+            status: 'processing',
+            razorpay_payment_id: response.razorpay_payment_id,
+          });
+
+          clearCart();
+          router.push(`/orders/${supabaseOrder.id}/success`);
+        },
+        prefill: {
+          name: formData.fullName,
+          email: formData.email,
+          contact: formData.phone,
+        },
+        theme: {
+          color: '#006d5b',
+        },
+      };
+
+      const paymentObject = new (window as any).Razorpay(options);
+      paymentObject.open();
+    } catch (error: any) {
+      console.error('Payment failed:', error);
+      alert(error.message || 'Something went wrong during payment');
+    } finally {
       setLoading(false);
-      return;
     }
-
-    // In a real app, you'd create an order on the server first
-    const options = {
-      key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
-      amount: grandTotal * 100, // amount in the smallest currency unit
-      currency: 'INR',
-      name: 'Hushabye',
-      description: 'Order Payment',
-      handler: function (response: any) {
-        console.log('Payment successful:', response);
-        clearCart();
-        router.push(`/orders/order_${Math.random().toString(36).substr(2, 9)}/success`);
-      },
-      prefill: {
-        name: 'John Doe',
-        email: 'john@example.com',
-        contact: '9999999999',
-      },
-      theme: {
-        color: '#ff8fa3',
-      },
-    };
-
-    const paymentObject = new (window as any).Razorpay(options);
-    paymentObject.open();
-    setLoading(false);
   };
 
   if (items.length === 0) {
@@ -76,7 +152,7 @@ export default function CheckoutPage() {
           <Link href="/cart" className="p-2 hover:bg-white rounded-full transition-colors">
             <ChevronLeft className="h-6 w-6" />
           </Link>
-          <h1 className="text-3xl font-bold text-slate-900">Checkout</h1>
+          <h1 className="text-3xl font-serif font-bold text-slate-900">Checkout</h1>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
@@ -95,19 +171,40 @@ export default function CheckoutPage() {
                     <label className="text-sm font-medium text-slate-700 flex items-center gap-2">
                       <User className="h-4 w-4" /> Full Name
                     </label>
-                    <input type="text" placeholder="John Doe" className="w-full rounded-lg border-slate-200 focus:border-primary focus:ring-primary" />
+                    <input 
+                      type="text" 
+                      name="fullName"
+                      value={formData.fullName}
+                      onChange={handleInputChange}
+                      placeholder="John Doe" 
+                      className="w-full rounded-lg border-slate-200 focus:border-primary focus:ring-primary" 
+                    />
                   </div>
                   <div className="space-y-2">
                     <label className="text-sm font-medium text-slate-700 flex items-center gap-2">
                       <Mail className="h-4 w-4" /> Email Address
                     </label>
-                    <input type="email" placeholder="john@example.com" className="w-full rounded-lg border-slate-200 focus:border-primary focus:ring-primary" />
+                    <input 
+                      type="email" 
+                      name="email"
+                      value={formData.email}
+                      onChange={handleInputChange}
+                      placeholder="john@example.com" 
+                      className="w-full rounded-lg border-slate-200 focus:border-primary focus:ring-primary" 
+                    />
                   </div>
                   <div className="space-y-2">
                     <label className="text-sm font-medium text-slate-700 flex items-center gap-2">
                       <Phone className="h-4 w-4" /> Phone Number
                     </label>
-                    <input type="tel" placeholder="+91 99999 99999" className="w-full rounded-lg border-slate-200 focus:border-primary focus:ring-primary" />
+                    <input 
+                      type="tel" 
+                      name="phone"
+                      value={formData.phone}
+                      onChange={handleInputChange}
+                      placeholder="+91 99999 99999" 
+                      className="w-full rounded-lg border-slate-200 focus:border-primary focus:ring-primary" 
+                    />
                   </div>
                   <div className="flex items-end">
                     <Button onClick={() => setStep(2)} className="w-full rounded-lg h-11">Next Step</Button>
@@ -129,27 +226,53 @@ export default function CheckoutPage() {
                     <label className="text-sm font-medium text-slate-700 flex items-center gap-2">
                       <MapPin className="h-4 w-4" /> Address Line 1
                     </label>
-                    <input type="text" placeholder="House No, Street Name" className="w-full rounded-lg border-slate-200 focus:border-primary focus:ring-primary" />
+                    <input 
+                      type="text" 
+                      name="address"
+                      value={formData.address}
+                      onChange={handleInputChange}
+                      placeholder="House No, Street Name" 
+                      className="w-full rounded-lg border-slate-200 focus:border-primary focus:ring-primary" 
+                    />
                   </div>
                   <div className="grid grid-cols-2 gap-4">
                     <div className="space-y-2">
                       <label className="text-sm font-medium text-slate-700">City</label>
-                      <input type="text" placeholder="Mumbai" className="w-full rounded-lg border-slate-200 focus:border-primary focus:ring-primary" />
+                      <input 
+                        type="text" 
+                        name="city"
+                        value={formData.city}
+                        onChange={handleInputChange}
+                        placeholder="Mumbai" 
+                        className="w-full rounded-lg border-slate-200 focus:border-primary focus:ring-primary" 
+                      />
                     </div>
                     <div className="space-y-2">
                       <label className="text-sm font-medium text-slate-700">State</label>
-                      <select className="w-full rounded-lg border-slate-200 focus:border-primary focus:ring-primary">
-                        <option>Maharashtra</option>
-                        <option>Delhi</option>
-                        <option>Karnataka</option>
-                        <option>Tamil Nadu</option>
+                      <select 
+                        name="state"
+                        value={formData.state}
+                        onChange={handleInputChange}
+                        className="w-full rounded-lg border-slate-200 focus:border-primary focus:ring-primary"
+                      >
+                        <option value="Maharashtra">Maharashtra</option>
+                        <option value="Delhi">Delhi</option>
+                        <option value="Karnataka">Karnataka</option>
+                        <option value="Tamil Nadu">Tamil Nadu</option>
                       </select>
                     </div>
                   </div>
                   <div className="grid grid-cols-2 gap-4">
                     <div className="space-y-2">
                       <label className="text-sm font-medium text-slate-700">Pincode</label>
-                      <input type="text" placeholder="400001" className="w-full rounded-lg border-slate-200 focus:border-primary focus:ring-primary" />
+                      <input 
+                        type="text" 
+                        name="pincode"
+                        value={formData.pincode}
+                        onChange={handleInputChange}
+                        placeholder="400001" 
+                        className="w-full rounded-lg border-slate-200 focus:border-primary focus:ring-primary" 
+                      />
                     </div>
                     <div className="flex items-end">
                       <Button onClick={() => setStep(3)} className="w-full rounded-lg h-11">Next Step</Button>

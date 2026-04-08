@@ -1,15 +1,6 @@
 'use client';
 
-import { 
-  TrendingUp, 
-  ShoppingBag, 
-  Users, 
-  DollarSign, 
-  ArrowUpRight, 
-  ArrowDownRight,
-  Clock,
-  AlertCircle
-} from 'lucide-react';
+import { useState, useEffect } from 'react';
 import { 
   LineChart, 
   Line, 
@@ -18,213 +9,168 @@ import {
   CartesianGrid, 
   Tooltip, 
   ResponsiveContainer,
+  AreaChart,
+  Area,
   BarChart,
   Bar
 } from 'recharts';
-import AdminSidebar from '@/src/components/layout/AdminSidebar';
-import { Badge } from '@/src/components/ui/Badge';
-import { cn } from '@/lib/utils';
+import Image from 'next/image';
+import { 
+  TrendingUp, 
+  Users, 
+  ShoppingBag, 
+  DollarSign,
+  ArrowUpRight,
+  ArrowDownRight,
+  Activity,
+  Loader2
+} from 'lucide-react';
+import { supabase } from '@/src/lib/supabase';
 
-const revenueData = [
-  { name: 'Mon', value: 4000 },
-  { name: 'Tue', value: 3000 },
-  { name: 'Wed', value: 2000 },
-  { name: 'Thu', value: 2780 },
-  { name: 'Fri', value: 1890 },
-  { name: 'Sat', value: 2390 },
-  { name: 'Sun', value: 3490 },
-];
-
-const topProducts = [
-  { name: 'Baby Shampoo', sales: 120, revenue: 59880 },
-  { name: 'Baby Wipes', sales: 450, revenue: 89550 },
-  { name: 'Diaper Pants XL', sales: 85, revenue: 33915 },
-  { name: 'Baby Lotion', sales: 95, revenue: 37905 },
+const data = [
+  { name: 'Mon', sales: 4000, visitors: 2400, ads: 2400 },
+  { name: 'Tue', sales: 3000, visitors: 1398, ads: 2210 },
+  { name: 'Wed', sales: 2000, visitors: 9800, ads: 2290 },
+  { name: 'Thu', sales: 2780, visitors: 3908, ads: 2000 },
+  { name: 'Fri', sales: 1890, visitors: 4800, ads: 2181 },
+  { name: 'Sat', sales: 2390, visitors: 3800, ads: 2500 },
+  { name: 'Sun', sales: 3490, visitors: 4300, ads: 2100 },
 ];
 
 export default function AdminDashboard() {
+  const [orders, setOrders] = useState<any[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    fetchLiveActivity();
+  }, []);
+
+  async function fetchLiveActivity() {
+    setIsLoading(true);
+    try {
+      const { data, error } = await supabase.from('orders').select('*').order('created_at', { ascending: false }).limit(5);
+      if (error) throw error;
+      setOrders(data || []);
+    } catch (error) {
+      console.error('Error fetching live activity:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  }
+
+  const stats = [
+    { name: 'Total Revenue', value: '₹4,25,000', change: '+12.5%', icon: DollarSign, trend: 'up' },
+    { name: 'Active Users', value: '12,450', change: '+18.2%', icon: Users, trend: 'up' },
+    { name: 'Total Orders', value: orders.length > 0 ? orders.length : '1,240', change: '-2.4%', icon: ShoppingBag, trend: 'down' },
+    { name: 'Ad Conversion', value: '4.2%', change: '+5.4%', icon: TrendingUp, trend: 'up' },
+  ];
   return (
-    <div className="flex min-h-screen bg-slate-50">
-      <AdminSidebar />
-      
-      <main className="flex-1 p-8 overflow-y-auto">
-        <div className="flex items-center justify-between mb-8">
-          <div>
-            <h1 className="text-3xl font-bold text-slate-900">Dashboard</h1>
-            <p className="text-slate-500">Welcome back, here&apos;s what&apos;s happening today.</p>
-          </div>
-          <div className="flex items-center gap-3">
-            <div className="flex items-center gap-2 px-4 py-2 bg-white border rounded-lg text-sm font-medium">
-              <Clock className="h-4 w-4 text-slate-400" /> Last 7 Days
+    <div className="space-y-8">
+      {/* Stats Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        {stats.map((stat) => (
+          <div key={stat.name} className="rounded-2xl bg-white p-6 shadow-sm border border-slate-100">
+            <div className="flex items-center justify-between mb-4">
+              <div className="h-12 w-12 rounded-xl bg-primary/10 flex items-center justify-center text-primary">
+                <stat.icon className="h-6 w-6" />
+              </div>
+              <div className={`flex items-center gap-1 text-xs font-bold ${stat.trend === 'up' ? 'text-emerald-500' : 'text-rose-500'}`}>
+                {stat.change}
+                {stat.trend === 'up' ? <ArrowUpRight className="h-3 w-3" /> : <ArrowDownRight className="h-3 w-3" />}
+              </div>
             </div>
-            <button className="px-4 py-2 bg-primary text-white rounded-lg text-sm font-bold shadow-sm hover:bg-primary/90">
-              Download Report
-            </button>
+            <p className="text-sm font-medium text-slate-500">{stat.name}</p>
+            <h3 className="text-2xl font-bold text-slate-900 mt-1">{stat.value}</h3>
+          </div>
+        ))}
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        {/* Main Sales Chart */}
+        <div className="lg:col-span-2 rounded-3xl bg-white p-8 shadow-sm border border-slate-100">
+          <div className="flex items-center justify-between mb-8">
+            <div>
+              <h3 className="text-lg font-bold text-slate-900">Sales Overview</h3>
+              <p className="text-sm text-slate-500">Real-time revenue tracking</p>
+            </div>
+            <div className="flex gap-2">
+              <button className="rounded-lg bg-slate-100 px-4 py-2 text-xs font-bold text-slate-600 hover:bg-slate-200 transition-colors">Weekly</button>
+              <button className="rounded-lg bg-primary px-4 py-2 text-xs font-bold text-white shadow-lg shadow-primary/20">Monthly</button>
+            </div>
+          </div>
+          <div className="h-[400px] w-full">
+            <ResponsiveContainer width="100%" height="100%">
+              <AreaChart data={data}>
+                <defs>
+                  <linearGradient id="colorSales" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="5%" stopColor="#108474" stopOpacity={0.1}/>
+                    <stop offset="95%" stopColor="#108474" stopOpacity={0}/>
+                  </linearGradient>
+                </defs>
+                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
+                <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fontSize: 12, fill: '#64748b' }} dy={10} />
+                <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 12, fill: '#64748b' }} />
+                <Tooltip 
+                  contentStyle={{ backgroundColor: '#fff', borderRadius: '12px', border: 'none', boxShadow: '0 10px 15px -3px rgb(0 0 0 / 0.1)' }}
+                />
+                <Area type="monotone" dataKey="sales" stroke="#108474" strokeWidth={3} fillOpacity={1} fill="url(#colorSales)" />
+              </AreaChart>
+            </ResponsiveContainer>
           </div>
         </div>
 
-        {/* KPI Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-          <div className="p-6 rounded-2xl bg-white border shadow-sm">
-            <div className="flex items-center justify-between mb-4">
-              <div className="h-10 w-10 rounded-xl bg-blue-50 flex items-center justify-center text-blue-600">
-                <DollarSign className="h-6 w-6" />
-              </div>
-              <div className="flex items-center gap-1 text-green-600 text-xs font-bold">
-                <ArrowUpRight className="h-3 w-3" /> +12.5%
-              </div>
-            </div>
-            <p className="text-sm text-slate-500 mb-1">Total Revenue</p>
-            <h3 className="text-2xl font-bold text-slate-900">₹1,28,430</h3>
+        {/* Live Activity */}
+        <div className="rounded-3xl bg-white p-8 shadow-sm border border-slate-100">
+          <div className="flex items-center gap-2 mb-8">
+            <div className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
+            <h3 className="text-lg font-bold text-slate-900">Live Activity</h3>
           </div>
-
-          <div className="p-6 rounded-2xl bg-white border shadow-sm">
-            <div className="flex items-center justify-between mb-4">
-              <div className="h-10 w-10 rounded-xl bg-purple-50 flex items-center justify-center text-purple-600">
-                <ShoppingBag className="h-6 w-6" />
-              </div>
-              <div className="flex items-center gap-1 text-green-600 text-xs font-bold">
-                <ArrowUpRight className="h-3 w-3" /> +8.2%
-              </div>
-            </div>
-            <p className="text-sm text-slate-500 mb-1">Total Orders</p>
-            <h3 className="text-2xl font-bold text-slate-900">342</h3>
-          </div>
-
-          <div className="p-6 rounded-2xl bg-white border shadow-sm">
-            <div className="flex items-center justify-between mb-4">
-              <div className="h-10 w-10 rounded-xl bg-orange-50 flex items-center justify-center text-orange-600">
-                <Users className="h-6 w-6" />
-              </div>
-              <div className="flex items-center gap-1 text-red-600 text-xs font-bold">
-                <ArrowDownRight className="h-3 w-3" /> -2.4%
-              </div>
-            </div>
-            <p className="text-sm text-slate-500 mb-1">New Customers</p>
-            <h3 className="text-2xl font-bold text-slate-900">128</h3>
-          </div>
-
-          <div className="p-6 rounded-2xl bg-white border shadow-sm">
-            <div className="flex items-center justify-between mb-4">
-              <div className="h-10 w-10 rounded-xl bg-green-50 flex items-center justify-center text-green-600">
-                <TrendingUp className="h-6 w-6" />
-              </div>
-              <div className="flex items-center gap-1 text-green-600 text-xs font-bold">
-                <ArrowUpRight className="h-3 w-3" /> +5.1%
-              </div>
-            </div>
-            <p className="text-sm text-slate-500 mb-1">Avg. Order Value</p>
-            <h3 className="text-2xl font-bold text-slate-900">₹375</h3>
-          </div>
-        </div>
-
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
-          {/* Revenue Chart */}
-          <div className="lg:col-span-2 p-6 rounded-2xl bg-white border shadow-sm">
-            <div className="flex items-center justify-between mb-6">
-              <h3 className="font-bold text-slate-900">Revenue Overview</h3>
-              <select className="text-xs border rounded-lg px-2 py-1 focus:outline-none">
-                <option>Weekly</option>
-                <option>Monthly</option>
-              </select>
-            </div>
-            <div className="h-[300px] w-full">
-              <ResponsiveContainer width="100%" height="100%">
-                <LineChart data={revenueData}>
-                  <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
-                  <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fontSize: 12, fill: '#94a3b8' }} dy={10} />
-                  <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 12, fill: '#94a3b8' }} dx={-10} />
-                  <Tooltip 
-                    contentStyle={{ backgroundColor: '#fff', borderRadius: '12px', border: '1px solid #f1f5f9', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }}
-                    itemStyle={{ color: '#ff8fa3', fontWeight: 'bold' }}
-                  />
-                  <Line type="monotone" dataKey="value" stroke="#ff8fa3" strokeWidth={3} dot={{ r: 4, fill: '#ff8fa3', strokeWidth: 2, stroke: '#fff' }} activeDot={{ r: 6 }} />
-                </LineChart>
-              </ResponsiveContainer>
-            </div>
-          </div>
-
-          {/* Low Stock Alerts */}
-          <div className="lg:col-span-1 p-6 rounded-2xl bg-white border shadow-sm">
-            <div className="flex items-center justify-between mb-6">
-              <h3 className="font-bold text-slate-900">Low Stock Alerts</h3>
-              <AlertCircle className="h-5 w-5 text-orange-500" />
-            </div>
-            <div className="space-y-4">
-              {[
-                { name: 'Baby Wipes 72pcs', stock: 8, threshold: 10 },
-                { name: 'Baby Shampoo 200ml', stock: 5, threshold: 10 },
-                { name: 'Diaper Pants XL', stock: 2, threshold: 5 },
-              ].map((item, idx) => (
-                <div key={idx} className="flex items-center justify-between p-3 rounded-xl bg-slate-50 border border-slate-100">
-                  <div>
-                    <p className="text-sm font-bold text-slate-800">{item.name}</p>
-                    <p className="text-xs text-slate-500">Stock: {item.stock} / Threshold: {item.threshold}</p>
-                  </div>
-                  <Badge variant="destructive" className="text-[10px]">Restock</Badge>
+          <div className="space-y-6">
+            {orders.length > 0 ? orders.map((order, i) => (
+              <div key={order.id} className="flex items-center gap-4">
+                <div className="h-10 w-10 rounded-full bg-slate-100 overflow-hidden shrink-0 relative">
+                  <Image src={`https://picsum.photos/seed/user${i}/40/40`} alt="User" fill className="object-cover" />
                 </div>
-              ))}
-            </div>
-            <button className="w-full mt-6 py-2 text-sm font-bold text-primary hover:underline">
-              View All Inventory
-            </button>
+                <div className="flex-1 min-w-0">
+                  <p className="text-sm font-bold text-slate-900 truncate">Order #{order.id.slice(0, 8)}</p>
+                  <p className="text-xs text-slate-500">{new Date(order.created_at).toLocaleTimeString()} • {order.customer_email}</p>
+                </div>
+                <div className="text-sm font-bold text-emerald-500">+₹{order.total_amount}</div>
+              </div>
+            )) : [1, 2, 3, 4, 5].map((i) => (
+              <div key={i} className="flex items-center gap-4">
+                <div className="h-10 w-10 rounded-full bg-slate-100 overflow-hidden shrink-0 relative">
+                  <Image src={`https://picsum.photos/seed/user${i}/40/40`} alt="User" fill className="object-cover" />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <p className="text-sm font-bold text-slate-900 truncate">New Order #124{i}</p>
+                  <p className="text-xs text-slate-500">2 mins ago • Mumbai, IN</p>
+                </div>
+                <div className="text-sm font-bold text-emerald-500">+₹1,240</div>
+              </div>
+            ))}
           </div>
+          <button className="w-full mt-8 rounded-xl border border-slate-200 py-3 text-xs font-bold text-slate-600 hover:bg-slate-50 transition-colors">
+            View All Activity
+          </button>
         </div>
+      </div>
 
-        {/* Recent Orders Table */}
-        <div className="p-6 rounded-2xl bg-white border shadow-sm">
-          <div className="flex items-center justify-between mb-6">
-            <h3 className="font-bold text-slate-900">Recent Orders</h3>
-            <button className="text-sm font-bold text-primary hover:underline">View All</button>
+      {/* Meta Ads Preview Widget */}
+      <div className="rounded-3xl bg-slate-900 p-8 text-white">
+        <div className="flex flex-col md:flex-row items-center justify-between gap-8">
+          <div className="space-y-4">
+            <div className="inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-1 text-[10px] font-bold uppercase tracking-widest">
+              <Activity className="h-3 w-3" /> Meta Ads Integration
+            </div>
+            <h2 className="text-3xl font-serif font-medium">Deploy campaigns directly from your dashboard.</h2>
+            <p className="text-white/60 max-w-xl">Connect your Meta Ad Account to manage budgets, creatives, and performance without leaving the Hushabye Admin Panel.</p>
           </div>
-          <div className="overflow-x-auto">
-            <table className="w-full text-left">
-              <thead>
-                <tr className="text-xs font-bold text-slate-400 uppercase tracking-wider border-b">
-                  <th className="pb-4 px-4">Order ID</th>
-                  <th className="pb-4 px-4">Customer</th>
-                  <th className="pb-4 px-4">Date</th>
-                  <th className="pb-4 px-4">Status</th>
-                  <th className="pb-4 px-4">Total</th>
-                  <th className="pb-4 px-4 text-right">Action</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y">
-                {[
-                  { id: '#ORD-9821', customer: 'Rahul Sharma', date: 'Oct 12, 2023', status: 'Delivered', total: '₹1,299' },
-                  { id: '#ORD-9822', customer: 'Priya Singh', date: 'Oct 12, 2023', status: 'Processing', total: '₹499' },
-                  { id: '#ORD-9823', customer: 'Amit Patel', date: 'Oct 11, 2023', status: 'Shipped', total: '₹850' },
-                  { id: '#ORD-9824', customer: 'Sneha Gupta', date: 'Oct 11, 2023', status: 'Pending', total: '₹1,599' },
-                ].map((order, idx) => (
-                  <tr key={idx} className="text-sm hover:bg-slate-50 transition-colors">
-                    <td className="py-4 px-4 font-bold text-slate-900">{order.id}</td>
-                    <td className="py-4 px-4 text-slate-600">{order.customer}</td>
-                    <td className="py-4 px-4 text-slate-500">{order.date}</td>
-                    <td className="py-4 px-4">
-                      <Badge 
-                        variant="secondary" 
-                        className={cn(
-                          "text-[10px] border-none",
-                          order.status === 'Delivered' ? "bg-green-100 text-green-700" :
-                          order.status === 'Processing' ? "bg-blue-100 text-blue-700" :
-                          order.status === 'Shipped' ? "bg-purple-100 text-purple-700" :
-                          "bg-orange-100 text-orange-700"
-                        )}
-                      >
-                        {order.status}
-                      </Badge>
-                    </td>
-                    <td className="py-4 px-4 font-bold text-slate-900">{order.total}</td>
-                    <td className="py-4 px-4 text-right">
-                      <button className="text-primary hover:underline font-bold text-xs">Details</button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+          <button className="rounded-full bg-primary px-8 py-4 font-bold text-white shadow-xl shadow-primary/20 transition-all hover:scale-105">
+            Connect Meta Account
+          </button>
         </div>
-      </main>
+      </div>
     </div>
   );
 }

@@ -1,15 +1,65 @@
 'use client';
 
 import { useParams } from 'next/navigation';
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { CheckCircle, Package, Truck, Calendar, ArrowRight, ShoppingBag } from 'lucide-react';
+import { CheckCircle, Package, Truck, Calendar, ArrowRight, ShoppingBag, Loader2 } from 'lucide-react';
 import { motion } from 'motion/react';
 import Header from '@/src/components/layout/Header';
 import Footer from '@/src/components/layout/Footer';
 import { Button } from '@/src/components/ui/Button';
+import { orderService } from '@/src/services/orderService';
 
 export default function OrderSuccessPage() {
   const { id } = useParams();
+  const [order, setOrder] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    if (!id) return;
+
+    const fetchOrder = async () => {
+      try {
+        const data = await orderService.getOrder(id as string);
+        setOrder(data);
+      } catch (error) {
+        console.error('Error fetching order:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchOrder();
+
+    // Subscribe to real-time updates
+    const subscription = orderService.subscribeToOrder(id as string, (payload) => {
+      console.log('Order update received:', payload);
+      setOrder(payload.new);
+    });
+
+    return () => {
+      subscription.unsubscribe();
+    };
+  }, [id]);
+
+  if (loading) {
+    return (
+      <div className="flex min-h-screen flex-col items-center justify-center">
+        <Loader2 className="h-12 w-12 text-primary animate-spin" />
+        <p className="mt-4 text-slate-600">Loading order details...</p>
+      </div>
+    );
+  }
+
+  const getStatusText = (status: string) => {
+    switch (status) {
+      case 'pending': return 'Order Confirmed';
+      case 'processing': return 'Preparing for Shipment';
+      case 'shipped': return 'Out for Delivery';
+      case 'delivered': return 'Delivered';
+      default: return status.charAt(0).toUpperCase() + status.slice(1);
+    }
+  };
 
   return (
     <div className="flex min-h-screen flex-col bg-slate-50">
@@ -28,9 +78,9 @@ export default function OrderSuccessPage() {
             </div>
           </motion.div>
 
-          <h1 className="text-4xl font-bold text-slate-900 mb-4">Thank You for Your Order!</h1>
+          <h1 className="text-4xl font-serif font-bold text-slate-900 mb-4">Thank You for Your Order!</h1>
           <p className="text-lg text-slate-600 mb-8">
-            Your order <span className="font-bold text-primary">#{id}</span> has been placed successfully. 
+            Your order <span className="font-bold text-primary">#{order?.order_number || id}</span> has been placed successfully. 
             We&apos;ve sent a confirmation email to your registered address.
           </p>
 
@@ -39,21 +89,21 @@ export default function OrderSuccessPage() {
               <Package className="h-8 w-8 text-primary" />
               <div className="text-sm">
                 <span className="block font-bold">Order Status</span>
-                <span className="text-slate-500">Confirmed</span>
+                <span className="text-slate-500">{getStatusText(order?.status || 'pending')}</span>
               </div>
             </div>
             <div className="p-6 rounded-2xl bg-white border shadow-sm flex flex-col items-center gap-3">
               <Truck className="h-8 w-8 text-primary" />
               <div className="text-sm">
                 <span className="block font-bold">Shipping</span>
-                <span className="text-slate-500">Standard Delivery</span>
+                <span className="text-slate-500">{order?.courier_name || 'Standard Delivery'}</span>
               </div>
             </div>
             <div className="p-6 rounded-2xl bg-white border shadow-sm flex flex-col items-center gap-3">
               <Calendar className="h-8 w-8 text-primary" />
               <div className="text-sm">
                 <span className="block font-bold">Est. Delivery</span>
-                <span className="text-slate-500">3-5 Business Days</span>
+                <span className="text-slate-500">{order?.estimated_delivery || '3-5 Business Days'}</span>
               </div>
             </div>
           </div>

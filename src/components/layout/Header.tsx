@@ -1,48 +1,93 @@
 'use client';
 
 import Link from 'next/link';
-import { ShoppingCart, User, Search, Menu } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { ShoppingCart, User, Search, Heart } from 'lucide-react';
 import { useCartStore } from '@/src/store/cartStore';
 import { useAuthStore } from '@/src/store/authStore';
+import { cn } from '@/src/lib/utils';
 
-export default function Header() {
+import Image from 'next/image';
+
+interface HeaderProps {
+  isTransparent?: boolean;
+}
+
+export default function Header({ isTransparent = false }: HeaderProps) {
   const cartItems = useCartStore((state) => state.items);
   const user = useAuthStore((state) => state.user);
   const cartCount = cartItems.reduce((acc, item) => acc + item.quantity, 0);
 
+  const navLinks = [
+    { name: 'Shampoo', href: '/collections/shampoo' },
+    { name: 'Diaper', href: '/collections/diaper' },
+    { name: 'Lotion', href: '/collections/lotion' },
+    { name: 'Combo', href: '/collections/combo' },
+  ];
+
   return (
-    <header className="sticky top-0 z-50 w-full border-b bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/60">
-      <div className="container mx-auto flex h-16 items-center justify-between px-4">
-        <div className="flex items-center gap-6">
-          <Link href="/" className="flex items-center space-x-2">
-            <span className="text-2xl font-serif font-bold tracking-tight text-primary">Hushabye</span>
+    <header className={cn(
+      "sticky top-0 z-50 w-full transition-all duration-300",
+      isTransparent 
+        ? "bg-transparent border-none" 
+        : "border-b border-primary/5 bg-background/80 backdrop-blur-xl"
+    )}>
+      <div className="container mx-auto flex h-24 md:h-32 items-center justify-between px-4">
+        <div className="flex items-center gap-4 md:gap-16">
+          <Link href="/" className="flex items-center">
+            <div className="relative h-16 w-16 md:h-24 md:w-24 overflow-hidden rounded-xl transition-all hover:scale-105">
+              <Image 
+                src="https://hushabye.in/cdn/shop/files/hushabay_logo.png" 
+                alt="Hushabye Logo" 
+                fill 
+                className="object-contain"
+                referrerPolicy="no-referrer"
+              />
+            </div>
           </Link>
-          <nav className="hidden md:flex items-center gap-6 text-sm font-medium">
-            <Link href="/collections/shampoo" className="transition-colors hover:text-primary">Shampoo</Link>
-            <Link href="/collections/diaper" className="transition-colors hover:text-primary">Diaper</Link>
-            <Link href="/collections/lotion" className="transition-colors hover:text-primary">Lotion</Link>
-            <Link href="/collections/combo" className="transition-colors hover:text-primary">Combo</Link>
+          <nav className={cn(
+            "flex items-center gap-3 md:gap-8 text-[9px] md:text-[13px] font-bold uppercase tracking-widest",
+            isTransparent ? "text-white" : "text-muted-foreground"
+          )}>
+            {navLinks.map((link) => (
+              <Link 
+                key={link.name} 
+                href={link.href} 
+                className={cn(
+                  "transition-all hover:scale-110 whitespace-nowrap",
+                  isTransparent ? "hover:text-accent" : "hover:text-primary"
+                )}
+              >
+                {link.name}
+              </Link>
+            ))}
           </nav>
         </div>
 
-        <div className="flex items-center gap-4">
-          <button className="p-2 hover:bg-accent rounded-full">
-            <Search className="h-5 w-5" />
+        <div className="flex items-center gap-1 md:gap-2">
+          <button className={cn(
+            "p-2 md:p-3 rounded-full transition-colors",
+            isTransparent ? "text-white hover:bg-white/10" : "hover:bg-primary/5 text-foreground/70"
+          )}>
+            <Search className="h-4 w-4 md:h-5 md:w-5" />
           </button>
-          <Link href="/account" className="p-2 hover:bg-accent rounded-full">
-            <User className="h-5 w-5" />
+          <Link href="/account" className={cn(
+            "p-2 md:p-3 rounded-full transition-colors",
+            isTransparent ? "text-white hover:bg-white/10" : "hover:bg-primary/5 text-foreground/70"
+          )}>
+            <User className="h-4 w-4 md:h-5 md:w-5" />
           </Link>
-          <Link href="/cart" className="relative p-2 hover:bg-accent rounded-full">
-            <ShoppingCart className="h-5 w-5" />
+          <Link href="/cart" className={cn(
+            "relative p-2 md:p-3 rounded-full transition-colors",
+            isTransparent ? "text-white hover:bg-white/10" : "hover:bg-primary/5 text-foreground/70"
+          )}>
+            <ShoppingCart className="h-4 w-4 md:h-5 md:w-5" />
             {cartCount > 0 && (
-              <span className="absolute top-0 right-0 flex h-4 w-4 items-center justify-center rounded-full bg-primary text-[10px] text-white">
+              <span className="absolute top-1 right-1 md:top-2 md:right-2 flex h-3 w-3 md:h-4 md:w-4 items-center justify-center rounded-full bg-primary text-[8px] md:text-[9px] font-bold text-white shadow-sm">
                 {cartCount}
               </span>
             )}
           </Link>
-          <button className="md:hidden p-2 hover:bg-accent rounded-full">
-            <Menu className="h-5 w-5" />
-          </button>
         </div>
       </div>
     </header>

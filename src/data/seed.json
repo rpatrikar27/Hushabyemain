@@ -5,7 +5,7 @@
       "name": "Shampoo",
       "slug": "shampoo",
       "description": "Gentle and tear-free shampoos for your baby's delicate hair.",
-      "image_url": "https://picsum.photos/seed/shampoo/800/600",
+      "image_url": "https://hushabye.in/cdn/shop/files/Shampoo2.jpg",
       "is_active": true
     },
     {
@@ -13,7 +13,7 @@
       "name": "Diaper",
       "slug": "diaper",
       "description": "Premium cotton soft diapers for all-day comfort.",
-      "image_url": "https://picsum.photos/seed/diaper/800/600",
+      "image_url": "https://hushabye.in/cdn/shop/files/1_2fa0a48c-8193-47da-8f9a-cf8fc87407bd.jpg",
       "is_active": true
     },
     {
@@ -21,7 +21,7 @@
       "name": "Lotion",
       "slug": "lotion",
       "description": "Moisturizing lotions to keep baby's skin soft and supple.",
-      "image_url": "https://picsum.photos/seed/lotion/800/600",
+      "image_url": "https://hushabye.in/cdn/shop/files/BodyLotionArtboard4.jpg",
       "is_active": true
     },
     {
@@ -29,7 +29,7 @@
       "name": "Talcum",
       "slug": "talcum",
       "description": "Fine dusting powder for a fresh and dry feel.",
-      "image_url": "https://picsum.photos/seed/talcum/800/600",
+      "image_url": "https://hushabye.in/cdn/shop/files/TalcumArtboard_5.jpg",
       "is_active": true
     },
     {
@@ -37,7 +37,7 @@
       "name": "Wipes",
       "slug": "wipes",
       "description": "Soft and moist wipes for gentle cleaning.",
-      "image_url": "https://picsum.photos/seed/wipes/800/600",
+      "image_url": "https://hushabye.in/cdn/shop/files/1_8f1b043b-394d-407d-ad41-047958cf798c.jpg",
       "is_active": true
     },
     {
@@ -45,7 +45,7 @@
       "name": "Wash",
       "slug": "wash",
       "description": "Mild body wash for a refreshing bath time.",
-      "image_url": "https://picsum.photos/seed/wash/800/600",
+      "image_url": "https://hushabye.in/cdn/shop/files/BabyWashArtboard9.jpg",
       "is_active": true
     },
     {
@@ -53,7 +53,7 @@
       "name": "Combo",
       "slug": "combo",
       "description": "Value packs and gift sets for complete baby care.",
-      "image_url": "https://picsum.photos/seed/combo/800/600",
+      "image_url": "https://hushabye.in/cdn/shop/files/Wash_Shampoo_Talcum.jpg",
       "is_active": true
     }
   ],
@@ -72,7 +72,7 @@
       "is_featured": true,
       "tags": ["shampoo", "tear-free", "milky", "milk-protein"],
       "images": [
-        { "url": "https://picsum.photos/seed/hushabye-shampoo/800/800", "alt": "Milky Soft Baby Shampoo", "position": 1 }
+        { "url": "https://hushabye.in/cdn/shop/files/Shampoo9.jpg", "alt": "Milky Soft Baby Shampoo", "position": 1 }
       ],
       "attributes": [
         { "key": "Volume", "value": "200ml" },
@@ -95,7 +95,7 @@
       "is_featured": true,
       "tags": ["wipes", "milk-infused", "soft", "gentle"],
       "images": [
-        { "url": "https://picsum.photos/seed/hushabye-wipes/800/800", "alt": "Premium Milk Baby Wipes", "position": 1 }
+        { "url": "https://hushabye.in/cdn/shop/files/1_8f1b043b-394d-407d-ad41-047958cf798c.jpg", "alt": "Premium Milk Baby Wipes", "position": 1 }
       ],
       "attributes": [
         { "key": "Count", "value": "72pcs" }
@@ -117,7 +117,7 @@
       "is_featured": true,
       "tags": ["diaper", "cotton-soft", "XL", "anti-rash"],
       "images": [
-        { "url": "https://picsum.photos/seed/hushabye-diaper/800/800", "alt": "Cotton Soft Baby Diapers Pants", "position": 1 }
+        { "url": "https://hushabye.in/cdn/shop/files/1_2fa0a48c-8193-47da-8f9a-cf8fc87407bd.jpg", "alt": "Cotton Soft Baby Diapers Pants", "position": 1 }
       ],
       "attributes": [
         { "key": "Size", "value": "XL" },
@@ -140,7 +140,7 @@
       "is_featured": false,
       "tags": ["lotion", "moisturizing", "soft-skin"],
       "images": [
-        { "url": "https://picsum.photos/seed/lotion1/800/800", "alt": "Moisturizing Baby Lotion", "position": 1 }
+        { "url": "https://hushabye.in/cdn/shop/files/BodyLotionArtboard9.jpg", "alt": "Moisturizing Baby Lotion", "position": 1 }
       ],
       "attributes": [
         { "key": "Volume", "value": "200ml" }
@@ -162,7 +162,7 @@
       "is_featured": false,
       "tags": ["wash", "mild", "gentle"],
       "images": [
-        { "url": "https://picsum.photos/seed/wash1/800/800", "alt": "Baby Wash", "position": 1 }
+        { "url": "https://hushabye.in/cdn/shop/files/BabyWashArtboard9.jpg", "alt": "Baby Wash", "position": 1 }
       ],
       "attributes": [
         { "key": "Volume", "value": "200ml" }
@@ -184,13 +184,82 @@
       "is_featured": false,
       "tags": ["powder", "dusting", "dry"],
       "images": [
-        { "url": "https://picsum.photos/seed/powder1/800/800", "alt": "Dusting Powder", "position": 1 }
+        { "url": "https://hushabye.in/cdn/shop/files/TalcumArtboard9_b9bf24ef-6ee0-4d55-8674-3b4376684da5.jpg", "alt": "Dusting Powder", "position": 1 }
       ],
       "attributes": [
         { "key": "Weight", "value": "100g" }
       ],
       "seo_title": "Hushabye Dusting Powder 100g - Fresh & Dry",
       "seo_description": "Hushabye Dusting Powder 100g. Keeps baby's skin dry and fresh throughout the day."
+    },
+    {
+      "name": "Hushabye Premium Milk Baby Wipes - Pack of 16 (1152pcs)",
+      "slug": "hushabye-premium-milk-baby-wipes-pack-of-16",
+      "category_id": "cat-wipes",
+      "description": "Hushabye Premium Milk Baby Wipes with lid- 0+ Months, pH balanced, Paraben & Alcohol Free, Moisturising & Thick Wipes with purified Water, Gentle & soothing, 1152pcs, Pack of 16",
+      "short_description": "pH balanced, Paraben & Alcohol Free, Pack of 16.",
+      "price": 1999,
+      "compare_at_price": 2499,
+      "sku": "HB-WP-1152-P16",
+      "stock_quantity": 100,
+      "is_active": true,
+      "is_featured": false,
+      "tags": ["wipes", "bulk", "milk-protein"],
+      "images": [
+        { "url": "https://hushabye.in/cdn/shop/files/1_8f1b043b-394d-407d-ad41-047958cf798c.jpg", "alt": "Premium Milk Baby Wipes Pack of 16", "position": 1 }
+      ],
+      "attributes": [
+        { "key": "Count", "value": "1152" },
+        { "key": "Pack Size", "value": "16" }
+      ],
+      "seo_title": "Hushabye Premium Milk Baby Wipes Pack of 16 - 1152 Count",
+      "seo_description": "Buy Hushabye Premium Milk Baby Wipes Pack of 16. Bulk pack for long-lasting care."
+    },
+    {
+      "name": "Hushabye Cotton Soft Baby Diapers Pants - XL (52 Count, Pack of 2)",
+      "slug": "hushabye-cotton-soft-baby-diapers-pants-xl-52-count-pack-of-2",
+      "category_id": "cat-diaper",
+      "description": "Hushabye Cotton Soft Baby Diapers Pants with Aloe Lotion | Anti-Rash & Breathable | 12hrs Leakage protection, 3D Leak Guard & ADL Core | (XL) for 12-17kg | 52 Count, Pack of 2",
+      "short_description": "Anti-Rash & Breathable, 12hrs Leakage protection, Pack of 2.",
+      "price": 649,
+      "compare_at_price": 899,
+      "sku": "HB-DP-XL-52-P2",
+      "stock_quantity": 150,
+      "is_active": true,
+      "is_featured": false,
+      "tags": ["diaper", "XL", "pack-of-2"],
+      "images": [
+        { "url": "https://hushabye.in/cdn/shop/files/1_2fa0a48c-8193-47da-8f9a-cf8fc87407bd.jpg", "alt": "Cotton Soft Baby Diapers Pants XL Pack of 2", "position": 1 }
+      ],
+      "attributes": [
+        { "key": "Size", "value": "XL" },
+        { "key": "Count", "value": "52" },
+        { "key": "Pack Size", "value": "2" }
+      ],
+      "seo_title": "Hushabye Cotton Soft Diaper Pants XL 52 Count Pack of 2",
+      "seo_description": "Shop Hushabye Cotton Soft Diaper Pants XL 52 Count Pack of 2. Premium comfort for your baby."
+    },
+    {
+      "name": "Hushabye Head to Toe Baby Wash - 200ml",
+      "slug": "hushabye-head-to-toe-baby-wash-200ml",
+      "category_id": "cat-wash",
+      "description": "Hushabye Head to Toe Baby Wash, 200ml, is a gentle and nourishing cleanser for your baby's delicate skin and hair. Enriched with milk protein and natural extracts.",
+      "short_description": "Gentle and nourishing head to toe wash.",
+      "price": 399,
+      "compare_at_price": 499,
+      "sku": "HB-BW-200-MILK",
+      "stock_quantity": 200,
+      "is_active": true,
+      "is_featured": false,
+      "tags": ["wash", "head-to-toe", "gentle"],
+      "images": [
+        { "url": "https://hushabye.in/cdn/shop/files/BabyWashArtboard9.jpg", "alt": "Head to Toe Baby Wash", "position": 1 }
+      ],
+      "attributes": [
+        { "key": "Volume", "value": "200ml" }
+      ],
+      "seo_title": "Hushabye Head to Toe Baby Wash 200ml - Gentle Care",
+      "seo_description": "Buy Hushabye Head to Toe Baby Wash 200ml. Perfect for your baby's daily bath."
     },
     {
       "name": "Combo: Wash + Shampoo + Talcum (3-pack)",
@@ -206,7 +275,7 @@
       "is_featured": true,
       "tags": ["combo", "gift-set", "bath-time"],
       "images": [
-        { "url": "https://picsum.photos/seed/combo1/800/800", "alt": "Bath Time Combo Pack", "position": 1 }
+        { "url": "https://hushabye.in/cdn/shop/files/Wash_Shampoo_Talcum.jpg", "alt": "Bath Time Combo Pack", "position": 1 }
       ],
       "attributes": [
         { "key": "Pack Size", "value": "3-pack" }
@@ -228,23 +297,118 @@
       "is_featured": true,
       "tags": ["combo", "ultimate-set", "skin-care"],
       "images": [
-        { "url": "https://picsum.photos/seed/combo2/800/800", "alt": "Ultimate Baby Care Combo Pack", "position": 1 }
+        { "url": "https://hushabye.in/cdn/shop/files/Lotion_Wash_Shampoo_Talcum_wipe.jpg", "alt": "Ultimate Baby Care Combo Pack", "position": 1 }
       ],
       "attributes": [
         { "key": "Pack Size", "value": "4-pack" }
       ],
       "seo_title": "Hushabye Ultimate Baby Care Combo Pack - 4 Essential Products",
       "seo_description": "Buy the Hushabye Ultimate Baby Care Combo Pack. Features Lotion, Wash, Shampoo, and Talcum for total care."
+    },
+    {
+      "name": "Hushabye Cotton Soft Baby Diapers Pants - XL (78 Count, Pack of 3)",
+      "slug": "hushabye-cotton-soft-baby-diapers-pants-xl-78-count-pack-of-3",
+      "category_id": "cat-diaper",
+      "description": "Hushabye Cotton Soft Baby Diapers Pants with Aloe Lotion | Anti-Rash & Breathable | 12hrs Leakage protection, 3D Leak Guard & ADL Core | (XL) for 12-17kg | 78 Count, Pack of 3",
+      "short_description": "Anti-Rash & Breathable, 12hrs Leakage protection, Pack of 3.",
+      "price": 999,
+      "compare_at_price": 1299,
+      "sku": "HB-DP-XL-78-P3",
+      "stock_quantity": 100,
+      "is_active": true,
+      "is_featured": false,
+      "tags": ["diaper", "XL", "pack-of-3"],
+      "images": [
+        { "url": "https://hushabye.in/cdn/shop/files/1_b8fc51ba-abb0-4918-bc93-acb37f7f6fc5.jpg", "alt": "Cotton Soft Baby Diapers Pants XL Pack of 3", "position": 1 }
+      ],
+      "attributes": [
+        { "key": "Size", "value": "XL" },
+        { "key": "Count", "value": "78" },
+        { "key": "Pack Size", "value": "3" }
+      ],
+      "seo_title": "Hushabye Cotton Soft Diaper Pants XL 78 Count Pack of 3",
+      "seo_description": "Buy Hushabye Cotton Soft Diaper Pants XL 78 Count Pack of 3. 12 hours protection and anti-rash formula."
+    },
+    {
+      "name": "Hushabye Dusting Powder with Pure Milk - 100g X Pack Of 2",
+      "slug": "hushabye-dusting-powder-with-pure-milk-100g-pack-of-2",
+      "category_id": "cat-talcum",
+      "description": "Hushabye Dusting Powder with Pure Milk For Babies | Paraben Free Talcum, Prevents Diaper Rashes, Irritation | Antibacterial & Hypoallergenic For Newborns Sensitive Skin | 100g X Pack Of 2",
+      "short_description": "Antibacterial & Hypoallergenic, Pack of 2.",
+      "price": 549,
+      "compare_at_price": 699,
+      "sku": "HB-PW-100-P2",
+      "stock_quantity": 200,
+      "is_active": true,
+      "is_featured": false,
+      "tags": ["powder", "milk-protein", "pack-of-2"],
+      "images": [
+        { "url": "https://hushabye.in/cdn/shop/files/TalcumArtboard_5.jpg", "alt": "Dusting Powder Pack of 2", "position": 1 }
+      ],
+      "attributes": [
+        { "key": "Weight", "value": "100g x 2" },
+        { "key": "Pack Size", "value": "2" }
+      ],
+      "seo_title": "Hushabye Dusting Powder 100g Pack of 2 - Hypoallergenic",
+      "seo_description": "Hushabye Dusting Powder 100g Pack of 2. Enriched with pure milk for sensitive skin."
     }
   ],
   "banners": [
     {
       "title": "Gentle Care for Your Little One",
       "subtitle": "Discover our range of premium baby care products.",
-      "image_url": "https://picsum.photos/seed/hero1/1920/1080",
+      "image_url": "https://cdn.shopify.com/s/files/1/0662/7960/4283/files/Baby_DaperArtboard_5.jpg",
       "link_url": "/collections/all",
       "position": "hero",
       "is_active": true
+    },
+    {
+      "title": "Premium Milk Baby Wipes",
+      "subtitle": "Extra soft and thick, infused with milk lotion.",
+      "image_url": "https://cdn.shopify.com/s/files/1/0662/7960/4283/files/Baby_WipesArtboard_1.jpg",
+      "link_url": "/products/hushabye-premium-milk-baby-wipes-72pcs",
+      "position": "hero",
+      "is_active": true
+    },
+    {
+      "title": "Milky Soft Baby Shampoo",
+      "subtitle": "Tear-free formula for delicate hair.",
+      "image_url": "https://hushabye.in/cdn/shop/files/ShampooArtboard_3.jpg",
+      "link_url": "/products/hushabye-milky-soft-baby-shampoo-200ml",
+      "position": "hero",
+      "is_active": true
+    },
+    {
+      "title": "Pure Milk Dusting Powder",
+      "subtitle": "Prevent rashes and keep skin dry.",
+      "image_url": "https://hushabye.in/cdn/shop/files/TalcumArtboard_5.jpg",
+      "link_url": "/products/hushabye-dusting-powder-100g",
+      "position": "small",
+      "is_active": true
+    },
+    {
+      "title": "Cotton Soft Diapers",
+      "subtitle": "12 hours leakage protection.",
+      "image_url": "https://hushabye.in/cdn/shop/files/Baby_DaperArtboard_5.jpg",
+      "link_url": "/collections/diaper",
+      "position": "small",
+      "is_active": true
+    }
+  ],
+  "widgets": [
+    {
+      "title": "Ultimate Baby Care Combo",
+      "subtitle": "Get 20% OFF on our best-selling 4-pack combo.",
+      "image_url": "https://cdn.shopify.com/s/files/1/0662/7960/4283/files/B_972x384_25a4473c-2187-4cf0-a673-27623227a740.jpg",
+      "link_url": "/products/combo-lotion-wash-shampoo-talcum-4-pack",
+      "type": "promo"
+    },
+    {
+      "title": "Newborn Gift Sets",
+      "subtitle": "Perfect for gifting and daily care.",
+      "image_url": "https://hushabye.in/cdn/shop/files/Wash_Shampoo_Talcum.jpg",
+      "link_url": "/collections/combo",
+      "type": "grid"
     }
   ],
   "site_settings": {

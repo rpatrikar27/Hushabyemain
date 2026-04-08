@@ -27,60 +27,63 @@ export default function ProductCard({ product }: ProductCardProps) {
     : 0;
 
   return (
-    <div className="group relative flex flex-col overflow-hidden rounded-lg border bg-white transition-all hover:shadow-lg">
-      <Link href={`/products/${product.slug}`} className="relative aspect-square overflow-hidden">
+    <div className="group relative flex flex-col transition-all duration-500">
+      <Link 
+        href={`/products/${product.slug}`} 
+        className="relative aspect-[4/5] overflow-hidden rounded-[2rem] bg-white border border-slate-100 p-8"
+      >
         <Image
-          src={product.images[0]?.url || 'https://picsum.photos/seed/product/400/400'}
+          src={product.images[0]?.url || 'https://picsum.photos/seed/product/400/500'}
           alt={product.images[0]?.alt || product.name}
           fill
-          className="object-cover transition-transform group-hover:scale-105"
+          className="object-contain p-8 transition-transform duration-700 group-hover:scale-110"
           referrerPolicy="no-referrer"
         />
+        <div className="absolute inset-0 bg-black/0 transition-colors duration-500 group-hover:bg-black/5" />
+        
         {discount > 0 && (
-          <Badge className="absolute top-2 left-2 bg-red-500 hover:bg-red-600">
+          <div className="absolute top-4 left-4 rounded-full bg-white/90 backdrop-blur-sm px-3 py-1 text-[10px] font-bold uppercase tracking-widest text-destructive shadow-sm">
             {discount}% OFF
-          </Badge>
+          </div>
         )}
+
+        <button 
+          onClick={(e) => {
+            e.preventDefault();
+            addItem({
+              id: product.id,
+              name: product.name,
+              price: product.price,
+              quantity: 1,
+              image: product.images[0]?.url,
+            });
+          }}
+          className="absolute bottom-4 right-4 flex h-12 w-12 items-center justify-center rounded-full bg-white text-primary shadow-lg transition-all duration-300 hover:scale-110 active:scale-95 opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0"
+        >
+          <ShoppingCart className="h-5 w-5" />
+        </button>
       </Link>
       
-      <div className="flex flex-1 flex-col p-4">
-        <div className="flex items-center gap-1 text-yellow-400 mb-1">
-          {[...Array(5)].map((_, i) => (
-            <Star key={i} className="h-3 w-3 fill-current" />
-          ))}
-          <span className="text-xs text-slate-400 ml-1">(4.8)</span>
+      <div className="mt-6 space-y-2 px-2">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-1 text-yellow-500">
+            <Star className="h-3 w-3 fill-current" />
+            <span className="text-[10px] font-bold tracking-tighter text-muted-foreground">4.8 (120)</span>
+          </div>
+          <span className="text-[10px] font-bold uppercase tracking-widest text-primary/60">New Arrival</span>
         </div>
         
-        <Link href={`/products/${product.slug}`} className="flex-1">
-          <h3 className="text-sm font-semibold text-slate-800 line-clamp-2 group-hover:text-primary">
+        <Link href={`/products/${product.slug}`} className="block">
+          <h3 className="font-display text-lg font-medium text-foreground transition-colors group-hover:text-primary line-clamp-1">
             {product.name}
           </h3>
         </Link>
         
-        <div className="mt-2 flex items-center justify-between">
-          <div className="flex items-baseline gap-2">
-            <span className="text-lg font-bold text-slate-900">₹{product.price}</span>
-            {product.compare_at_price && (
-              <span className="text-xs text-slate-400 line-through">₹{product.compare_at_price}</span>
-            )}
-          </div>
-          <Button 
-            size="icon" 
-            variant="secondary" 
-            className="h-8 w-8 rounded-full"
-            onClick={(e) => {
-              e.preventDefault();
-              addItem({
-                id: product.id,
-                name: product.name,
-                price: product.price,
-                quantity: 1,
-                image: product.images[0]?.url,
-              });
-            }}
-          >
-            <ShoppingCart className="h-4 w-4" />
-          </Button>
+        <div className="flex items-baseline gap-2">
+          <span className="text-xl font-bold text-primary">₹{product.price}</span>
+          {product.compare_at_price && (
+            <span className="text-sm text-muted-foreground line-through decoration-destructive/30">₹{product.compare_at_price}</span>
+          )}
         </div>
       </div>
     </div>

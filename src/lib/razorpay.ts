@@ -12,9 +12,23 @@ export const loadRazorpay = () => {
   });
 };
 
-export const createRazorpayOrder = async (amount: number) => {
-  // In a real app, this would call a backend endpoint to create an order
-  // For this demo, we'll simulate it or assume the backend handles it via Supabase Edge Functions
-  console.log('Creating Razorpay order for amount:', amount);
-  return { id: 'order_' + Math.random().toString(36).substr(2, 9) };
+export const createRazorpayOrder = async (amount: number, currency: string = 'INR') => {
+  try {
+    const response = await fetch('/api/razorpay/order', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ amount, currency }),
+    });
+
+    if (!response.ok) {
+      throw new Error('Failed to create Razorpay order');
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error('Error creating Razorpay order:', error);
+    throw error;
+  }
 };
