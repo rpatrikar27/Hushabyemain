@@ -30,18 +30,18 @@ export default function ProductCard({ product }: ProductCardProps) {
     <div className="group relative flex flex-col transition-all duration-500">
       <Link 
         href={`/products/${product.slug}`} 
-        className="relative aspect-[4/5] overflow-hidden rounded-[2rem] bg-white border border-slate-100 p-8"
+        className="relative aspect-[4/5] overflow-hidden rounded-[1.5rem] md:rounded-[2rem] bg-white border border-slate-100 p-4 md:p-8"
       >
         <Image
           src={product.images[0]?.url || 'https://picsum.photos/seed/product/400/500'}
           alt={product.images[0]?.alt || product.name}
           fill
-          className="object-contain p-8 transition-transform duration-700 group-hover:scale-110"
+          className="object-contain p-4 md:p-8 transition-transform duration-700 group-hover:scale-110"
           referrerPolicy="no-referrer"
         />
         
-        {/* Subtle Overlay */}
-        <div className="absolute inset-0 bg-black/20 opacity-0 transition-opacity duration-300 group-hover:opacity-100 flex items-center justify-center">
+        {/* Subtle Overlay - Hidden on touch devices or shown on hover */}
+        <div className="absolute inset-0 bg-black/20 opacity-0 transition-opacity duration-300 md:group-hover:opacity-100 flex items-center justify-center">
           <button 
             onClick={(e) => {
               e.preventDefault();
@@ -53,7 +53,7 @@ export default function ProductCard({ product }: ProductCardProps) {
                 image: product.images[0]?.url,
               });
             }}
-            className="bg-white text-primary px-6 py-3 rounded-full font-bold text-sm uppercase tracking-widest shadow-xl transform translate-y-4 transition-all duration-300 group-hover:translate-y-0 hover:bg-primary hover:text-white"
+            className="hidden md:block bg-white text-primary px-6 py-3 rounded-full font-bold text-sm uppercase tracking-widest shadow-xl transform translate-y-4 transition-all duration-300 group-hover:translate-y-0 hover:bg-primary hover:text-white"
           >
             Add to Cart
           </button>

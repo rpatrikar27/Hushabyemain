@@ -57,12 +57,12 @@ export default function ProductContent({ product }: ProductContentProps) {
       />
       <Header />
       
-      <main className="flex-1 container mx-auto px-4 py-8">
-        <nav className="flex items-center gap-2 text-sm text-slate-500 mb-8">
-          <Link href="/">Home</Link>
-          <ChevronRight className="h-4 w-4" />
-          <Link href="/collections/all">Products</Link>
-          <ChevronRight className="h-4 w-4" />
+      <main className="flex-1 container mx-auto px-4 py-4 md:py-8">
+        <nav className="flex items-center gap-2 text-sm text-slate-500 mb-6 md:mb-8 overflow-x-auto whitespace-nowrap pb-2 scrollbar-hide">
+          <Link href="/" className="flex-shrink-0">Home</Link>
+          <ChevronRight className="h-4 w-4 flex-shrink-0" />
+          <Link href="/collections/all" className="flex-shrink-0">Products</Link>
+          <ChevronRight className="h-4 w-4 flex-shrink-0" />
           <span className="text-slate-900 font-medium truncate">{product.name}</span>
         </nav>
 
@@ -101,22 +101,22 @@ export default function ProductContent({ product }: ProductContentProps) {
           {/* Product Info */}
           <div className="space-y-6">
             <div>
-              <h1 className="text-3xl font-bold text-slate-900 mb-2">{product.name}</h1>
-              <div className="flex items-center gap-4">
+              <h1 className="text-2xl md:text-3xl font-bold text-slate-900 mb-2">{product.name}</h1>
+              <div className="flex flex-wrap items-center gap-3 md:gap-4">
                 <div className="flex items-center gap-1 text-yellow-400">
                   {[...Array(5)].map((_, i) => (
                     <Star key={i} className="h-4 w-4 fill-current" />
                   ))}
-                  <span className="text-sm text-slate-500 ml-1">4.8 (120 reviews)</span>
+                  <span className="text-xs md:text-sm text-slate-500 ml-1">4.8 (120 reviews)</span>
                 </div>
-                <Badge variant="secondary" className="bg-green-100 text-green-700 border-none">In Stock</Badge>
+                <Badge variant="secondary" className="bg-green-100 text-green-700 border-none text-[10px] md:text-xs">In Stock</Badge>
               </div>
             </div>
 
             <div className="flex items-baseline gap-3">
-              <span className="text-4xl font-bold text-slate-900">₹{product.price}</span>
+              <span className="text-3xl md:text-4xl font-bold text-slate-900">₹{product.price}</span>
               {product.compare_at_price && (
-                <span className="text-xl text-slate-400 line-through">₹{product.compare_at_price}</span>
+                <span className="text-lg md:text-xl text-slate-400 line-through">₹{product.compare_at_price}</span>
               )}
             </div>
 

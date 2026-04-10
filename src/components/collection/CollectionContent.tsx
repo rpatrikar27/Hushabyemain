@@ -2,12 +2,13 @@
 
 import Link from 'next/link';
 import { useState, useMemo } from 'react';
-import { ChevronRight, Filter, SlidersHorizontal, Check } from 'lucide-react';
+import { ChevronRight, Filter, SlidersHorizontal, Check, X } from 'lucide-react';
 import Header from '@/src/components/layout/Header';
 import Footer from '@/src/components/layout/Footer';
 import ProductCard from '@/src/components/product/ProductCard';
 import seedData from '@/src/data/seed.json';
 import { cn } from '@/src/lib/utils';
+import { motion, AnimatePresence } from 'motion/react';
 
 interface CollectionContentProps {
   slug: string;
@@ -19,6 +20,7 @@ export default function CollectionContent({ slug, category, products }: Collecti
   const [selectedPriceRanges, setSelectedPriceRanges] = useState<string[]>([]);
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [sortBy, setSortBy] = useState<string>('featured');
+  const [isMobileFilterOpen, setIsMobileFilterOpen] = useState(false);
 
   // Extract unique tags from products
   const allTags = useMemo(() => {
@@ -102,126 +104,134 @@ export default function CollectionContent({ slug, category, products }: Collecti
     );
   };
 
+  const filterSidebarContent = (
+    <div className="space-y-8">
+      <div>
+        <h3 className="font-bold mb-4 flex items-center gap-2 text-slate-900">
+          <Filter className="h-4 w-4" /> Categories
+        </h3>
+        <ul className="space-y-2 text-sm text-slate-600">
+          <li key="all">
+            <Link 
+              href="/collections/all"
+              onClick={() => setIsMobileFilterOpen(false)}
+              className={cn(
+                "hover:text-primary transition-colors",
+                slug === 'all' ? 'text-primary font-bold' : ''
+              )}
+            >
+              All Products
+            </Link>
+          </li>
+          {seedData.categories.map(cat => (
+            <li key={cat.slug}>
+              <Link 
+                href={`/collections/${cat.slug}`}
+                onClick={() => setIsMobileFilterOpen(false)}
+                className={cn(
+                  "hover:text-primary transition-colors",
+                  slug === cat.slug ? 'text-primary font-bold' : ''
+                )}
+              >
+                {cat.name}
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      {allBrands.length > 0 && (
+        <div>
+          <h3 className="font-bold mb-4 text-slate-900">Brands</h3>
+          <div className="space-y-2">
+            {allBrands.map(brand => (
+              <label key={brand} className="flex items-center gap-2 text-sm text-slate-600 cursor-pointer group">
+                <div 
+                  onClick={() => toggleBrand(brand)}
+                  className={cn(
+                    "h-4 w-4 rounded border flex items-center justify-center transition-all",
+                    selectedBrands.includes(brand) ? "bg-primary border-primary" : "border-slate-300 group-hover:border-primary"
+                  )}
+                >
+                  {selectedBrands.includes(brand) && <Check className="h-3 w-3 text-white" />}
+                </div>
+                <span>{brand}</span>
+              </label>
+            ))}
+          </div>
+        </div>
+      )}
+
+      <div>
+        <h3 className="font-bold mb-4 text-slate-900">Price Range</h3>
+        <div className="space-y-2">
+          {[
+            { id: 'under-500', label: 'Under ₹500' },
+            { id: '500-1000', label: '₹500 - ₹1000' },
+            { id: 'over-1000', label: 'Over ₹1000' }
+          ].map(range => (
+            <label key={range.id} className="flex items-center gap-2 text-sm text-slate-600 cursor-pointer group">
+              <div 
+                onClick={() => togglePriceRange(range.id)}
+                className={cn(
+                  "h-4 w-4 rounded border flex items-center justify-center transition-all",
+                  selectedPriceRanges.includes(range.id) ? "bg-primary border-primary" : "border-slate-300 group-hover:border-primary"
+                )}
+              >
+                {selectedPriceRanges.includes(range.id) && <Check className="h-3 w-3 text-white" />}
+              </div>
+              <span>{range.label}</span>
+            </label>
+          ))}
+        </div>
+      </div>
+
+      {allTags.length > 0 && (
+        <div>
+          <h3 className="font-bold mb-4 text-slate-900">Tags</h3>
+          <div className="flex flex-wrap gap-2">
+            {allTags.map(tag => (
+              <button
+                key={tag}
+                onClick={() => toggleTag(tag)}
+                className={cn(
+                  "px-3 py-1 rounded-full text-xs font-medium transition-all",
+                  selectedTags.includes(tag) 
+                    ? "bg-primary text-white shadow-sm" 
+                    : "bg-slate-100 text-slate-600 hover:bg-slate-200"
+                )}
+              >
+                {tag}
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+
   return (
     <div className="flex min-h-screen flex-col">
       <Header />
       
       <main className="flex-1 container mx-auto px-4 py-8">
-        <nav className="flex items-center gap-2 text-sm text-slate-500 mb-8">
+        <nav className="flex items-center gap-2 text-sm text-slate-500 mb-8 overflow-x-auto whitespace-nowrap pb-2">
           <Link href="/">Home</Link>
-          <ChevronRight className="h-4 w-4" />
+          <ChevronRight className="h-4 w-4 flex-shrink-0" />
           <span className="text-slate-900 font-medium capitalize">{slug.replace('-', ' ')}</span>
         </nav>
 
         <div className="flex flex-col md:flex-row gap-8">
-          {/* Sidebar Filters */}
-          <aside className="hidden md:block w-64 space-y-8">
-            <div>
-              <h3 className="font-bold mb-4 flex items-center gap-2 text-slate-900">
-                <Filter className="h-4 w-4" /> Categories
-              </h3>
-              <ul className="space-y-2 text-sm text-slate-600">
-                <li key="all">
-                  <Link 
-                    href="/collections/all"
-                    className={cn(
-                      "hover:text-primary transition-colors",
-                      slug === 'all' ? 'text-primary font-bold' : ''
-                    )}
-                  >
-                    All Products
-                  </Link>
-                </li>
-                {seedData.categories.map(cat => (
-                  <li key={cat.slug}>
-                    <Link 
-                      href={`/collections/${cat.slug}`}
-                      className={cn(
-                        "hover:text-primary transition-colors",
-                        slug === cat.slug ? 'text-primary font-bold' : ''
-                      )}
-                    >
-                      {cat.name}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            {allBrands.length > 0 && (
-              <div>
-                <h3 className="font-bold mb-4 text-slate-900">Brands</h3>
-                <div className="space-y-2">
-                  {allBrands.map(brand => (
-                    <label key={brand} className="flex items-center gap-2 text-sm text-slate-600 cursor-pointer group">
-                      <div 
-                        onClick={() => toggleBrand(brand)}
-                        className={cn(
-                          "h-4 w-4 rounded border flex items-center justify-center transition-all",
-                          selectedBrands.includes(brand) ? "bg-primary border-primary" : "border-slate-300 group-hover:border-primary"
-                        )}
-                      >
-                        {selectedBrands.includes(brand) && <Check className="h-3 w-3 text-white" />}
-                      </div>
-                      <span>{brand}</span>
-                    </label>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            <div>
-              <h3 className="font-bold mb-4 text-slate-900">Price Range</h3>
-              <div className="space-y-2">
-                {[
-                  { id: 'under-500', label: 'Under ₹500' },
-                  { id: '500-1000', label: '₹500 - ₹1000' },
-                  { id: 'over-1000', label: 'Over ₹1000' }
-                ].map(range => (
-                  <label key={range.id} className="flex items-center gap-2 text-sm text-slate-600 cursor-pointer group">
-                    <div 
-                      onClick={() => togglePriceRange(range.id)}
-                      className={cn(
-                        "h-4 w-4 rounded border flex items-center justify-center transition-all",
-                        selectedPriceRanges.includes(range.id) ? "bg-primary border-primary" : "border-slate-300 group-hover:border-primary"
-                      )}
-                    >
-                      {selectedPriceRanges.includes(range.id) && <Check className="h-3 w-3 text-white" />}
-                    </div>
-                    <span>{range.label}</span>
-                  </label>
-                ))}
-              </div>
-            </div>
-
-            {allTags.length > 0 && (
-              <div>
-                <h3 className="font-bold mb-4 text-slate-900">Tags</h3>
-                <div className="flex flex-wrap gap-2">
-                  {allTags.map(tag => (
-                    <button
-                      key={tag}
-                      onClick={() => toggleTag(tag)}
-                      className={cn(
-                        "px-3 py-1 rounded-full text-xs font-medium transition-all",
-                        selectedTags.includes(tag) 
-                          ? "bg-primary text-white shadow-sm" 
-                          : "bg-slate-100 text-slate-600 hover:bg-slate-200"
-                      )}
-                    >
-                      {tag}
-                    </button>
-                  ))}
-                </div>
-              </div>
-            )}
+          {/* Sidebar Filters - Desktop */}
+          <aside className="hidden md:block w-64">
+            {filterSidebarContent}
           </aside>
 
           {/* Product Grid */}
           <div className="flex-1">
-            <div className="flex flex-col md:flex-row md:items-center justify-between mb-8 gap-4">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-8 gap-4">
               <div>
-                <h1 className="text-3xl font-bold text-slate-900 capitalize mb-1">
+                <h1 className="text-2xl md:text-3xl font-bold text-slate-900 capitalize mb-1">
                   {category?.name || (slug === 'all' ? 'All Products' : slug)}
                 </h1>
                 <p className="text-sm text-slate-500">
@@ -229,12 +239,19 @@ export default function CollectionContent({ slug, category, products }: Collecti
                 </p>
               </div>
               
-              <div className="flex items-center gap-4 self-end md:self-auto">
-                <div className="relative group">
+              <div className="flex items-center gap-2">
+                <button 
+                  onClick={() => setIsMobileFilterOpen(true)}
+                  className="md:hidden flex items-center gap-2 px-4 py-2 border rounded-lg text-sm font-bold text-slate-700 bg-white hover:bg-slate-50"
+                >
+                  <Filter className="h-4 w-4" /> Filters
+                </button>
+                
+                <div className="relative flex-1 sm:flex-none">
                   <select 
                     value={sortBy}
                     onChange={(e) => setSortBy(e.target.value)}
-                    className="appearance-none bg-white border rounded-lg pl-10 pr-8 py-2 text-sm font-medium cursor-pointer hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-primary/20"
+                    className="w-full appearance-none bg-white border rounded-lg pl-10 pr-8 py-2 text-sm font-medium cursor-pointer hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-primary/20"
                   >
                     <option value="featured">Featured</option>
                     <option value="newest">Newest Arrivals</option>
@@ -247,7 +264,7 @@ export default function CollectionContent({ slug, category, products }: Collecti
             </div>
 
             {filteredProducts.length > 0 ? (
-              <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+              <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6">
                 {filteredProducts.map((product, idx) => (
                   <ProductCard key={idx} product={{ ...product, id: String(idx) }} />
                 ))}
@@ -276,6 +293,49 @@ export default function CollectionContent({ slug, category, products }: Collecti
           </div>
         </div>
       </main>
+
+      {/* Mobile Filter Drawer */}
+      <AnimatePresence>
+        {isMobileFilterOpen && (
+          <>
+            <motion.div 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setIsMobileFilterOpen(false)}
+              className="fixed inset-0 z-[60] bg-black/40 backdrop-blur-sm md:hidden"
+            />
+            <motion.div 
+              initial={{ x: '100%' }}
+              animate={{ x: 0 }}
+              exit={{ x: '100%' }}
+              transition={{ type: 'spring', damping: 25, stiffness: 200 }}
+              className="fixed inset-y-0 right-0 z-[70] w-full max-w-xs bg-white shadow-2xl md:hidden flex flex-col"
+            >
+              <div className="p-6 border-b flex items-center justify-between">
+                <h2 className="text-xl font-bold text-slate-900">Filters</h2>
+                <button 
+                  onClick={() => setIsMobileFilterOpen(false)}
+                  className="p-2 hover:bg-slate-100 rounded-full transition-colors"
+                >
+                  <X className="h-6 w-6" />
+                </button>
+              </div>
+              <div className="flex-1 overflow-y-auto p-6">
+                {filterSidebarContent}
+              </div>
+              <div className="p-6 border-t bg-slate-50">
+                <button 
+                  onClick={() => setIsMobileFilterOpen(false)}
+                  className="w-full py-4 bg-primary text-white rounded-full font-bold shadow-lg shadow-primary/20"
+                >
+                  Show {filteredProducts.length} Results
+                </button>
+              </div>
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
 
       <Footer />
     </div>

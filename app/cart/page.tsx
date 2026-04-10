@@ -21,35 +21,35 @@ export default function CartPage() {
         {items.length > 0 ? (
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
             {/* Cart Items */}
-            <div className="lg:col-span-2 space-y-6">
+            <div className="lg:col-span-2 space-y-4 md:space-y-6">
               {items.map((item) => (
-                <div key={item.id} className="flex gap-4 p-4 rounded-xl border bg-white shadow-sm">
-                  <div className="relative h-24 w-24 flex-shrink-0 overflow-hidden rounded-lg border bg-slate-50">
+                <div key={item.id} className="flex flex-col sm:flex-row gap-4 p-4 rounded-xl border bg-white shadow-sm">
+                  <div className="relative h-32 w-full sm:h-24 sm:w-24 flex-shrink-0 overflow-hidden rounded-lg border bg-slate-50">
                     <Image
                       src={item.image || 'https://picsum.photos/seed/product/200/200'}
                       alt={item.name}
                       fill
-                      className="object-cover"
+                      className="object-contain p-2"
                       referrerPolicy="no-referrer"
                     />
                   </div>
                   
                   <div className="flex flex-1 flex-col justify-between">
-                    <div className="flex justify-between">
+                    <div className="flex justify-between items-start">
                       <div>
-                        <h3 className="font-bold text-slate-800">{item.name}</h3>
+                        <h3 className="font-bold text-slate-800 line-clamp-1">{item.name}</h3>
                         <p className="text-sm text-slate-500">₹{item.price}</p>
                       </div>
                       <button 
                         onClick={() => removeItem(item.id)}
-                        className="text-slate-400 hover:text-destructive transition-colors"
+                        className="text-slate-400 hover:text-destructive transition-colors p-1"
                       >
                         <Trash2 className="h-5 w-5" />
                       </button>
                     </div>
                     
                     <div className="flex items-center justify-between mt-4">
-                      <div className="flex items-center border rounded-full px-3 py-1">
+                      <div className="flex items-center border rounded-full px-3 py-1 bg-slate-50">
                         <button 
                           className="p-1 hover:text-primary disabled:opacity-50"
                           onClick={() => updateQuantity(item.id, item.quantity - 1)}
@@ -65,7 +65,7 @@ export default function CartPage() {
                           <Plus className="h-4 w-4" />
                         </button>
                       </div>
-                      <span className="font-bold text-slate-900">₹{item.price * item.quantity}</span>
+                      <span className="font-bold text-slate-900 text-lg">₹{item.price * item.quantity}</span>
                     </div>
                   </div>
                 </div>

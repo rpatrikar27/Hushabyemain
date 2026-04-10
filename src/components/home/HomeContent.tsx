@@ -140,7 +140,7 @@ export default function HomeContent() {
                       initial={{ opacity: 0, y: 40 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: 0.5, duration: 0.8 }}
-                      className="text-3xl md:text-7xl lg:text-8xl font-serif font-medium leading-[1.1] text-white tracking-tight"
+                      className="text-4xl md:text-7xl lg:text-8xl font-serif font-medium leading-[1.1] text-white tracking-tight"
                     >
                       {banners[currentSlide].title.split(' ').map((word, i) => (
                         <span key={i} className={i === 1 ? "italic text-accent" : ""}>
@@ -152,7 +152,7 @@ export default function HomeContent() {
                       initial={{ opacity: 0, y: 30 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: 0.6, duration: 0.8 }}
-                      className="text-sm md:text-2xl text-white/80 max-w-xl leading-relaxed font-light"
+                      className="text-base md:text-2xl text-white/80 max-w-xl leading-relaxed font-light"
                     >
                       {banners[currentSlide].subtitle}
                     </motion.p>
@@ -162,18 +162,18 @@ export default function HomeContent() {
                     initial={{ opacity: 0, y: 30 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.7, duration: 0.8 }}
-                    className="flex flex-wrap gap-3 md:gap-4 pt-2 md:pt-4"
+                    className="flex flex-col sm:flex-row gap-3 md:gap-4 pt-4"
                   >
                     <Link 
                       href={banners[currentSlide].link_url} 
-                      className="group relative inline-flex h-12 md:h-16 items-center justify-center overflow-hidden rounded-full bg-accent px-8 md:px-12 text-xs md:text-sm font-bold text-slate-900 transition-all hover:scale-105 active:scale-95 shadow-xl shadow-accent/20"
+                      className="group relative inline-flex h-12 md:h-16 items-center justify-center overflow-hidden rounded-full bg-accent px-8 md:px-12 text-sm font-bold text-slate-900 transition-all hover:scale-105 active:scale-95 shadow-xl shadow-accent/20"
                     >
                       <span className="relative z-10">Shop Now</span>
                       <div className="absolute inset-0 bg-white translate-y-full transition-transform group-hover:translate-y-0" />
                     </Link>
                     <Link 
                       href="/pages/about" 
-                      className="inline-flex h-12 md:h-16 items-center justify-center rounded-full border border-white/30 bg-white/10 backdrop-blur-md px-8 md:px-12 text-xs md:text-sm font-bold text-white transition-all hover:bg-white hover:text-slate-900"
+                      className="inline-flex h-12 md:h-16 items-center justify-center rounded-full border border-white/30 bg-white/10 backdrop-blur-md px-8 md:px-12 text-sm font-bold text-white transition-all hover:bg-white hover:text-slate-900"
                     >
                       Our Story
                     </Link>
@@ -227,7 +227,7 @@ export default function HomeContent() {
               Browse All Collections <ChevronRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
             </Link>
           </div>
-          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-8">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-7 gap-6 md:gap-8">
             {categories.map((category, idx) => (
               <motion.div
                 key={category.slug}
@@ -303,7 +303,7 @@ export default function HomeContent() {
                 Shop All Products <ChevronRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
               </Link>
             </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 md:gap-10">
               {featuredProducts.map((product, idx) => (
                 <motion.div
                   key={idx}
