@@ -32,19 +32,9 @@ export default function Header({ isTransparent = false }: HeaderProps) {
         ? "bg-transparent border-none" 
         : "border-b border-primary/5 bg-background/80 backdrop-blur-xl"
     )}>
-      <div className="container mx-auto flex h-24 md:h-32 items-center justify-between px-4">
-        <div className="flex items-center gap-4 md:gap-16">
-          <Link href="/" className="flex items-center">
-            <div className="relative h-16 w-16 md:h-24 md:w-24 overflow-hidden rounded-xl transition-all hover:scale-105">
-              <Image 
-                src="https://hushabye.in/cdn/shop/files/hushabay_logo.png" 
-                alt="Hushabye Logo" 
-                fill 
-                className="object-contain"
-                referrerPolicy="no-referrer"
-              />
-            </div>
-          </Link>
+      <div className="container mx-auto flex h-24 md:h-32 items-center px-4">
+        {/* Left: Navigation */}
+        <div className="flex-1 flex justify-start">
           <nav className={cn(
             "flex items-center gap-3 md:gap-8 text-[9px] md:text-[13px] font-bold uppercase tracking-widest",
             isTransparent ? "text-white" : "text-muted-foreground"
@@ -64,7 +54,23 @@ export default function Header({ isTransparent = false }: HeaderProps) {
           </nav>
         </div>
 
-        <div className="flex items-center gap-1 md:gap-2">
+        {/* Center: Logo */}
+        <div className="flex-none flex justify-center">
+          <Link href="/" className="flex items-center">
+            <div className="relative h-16 w-16 md:h-24 md:w-24 overflow-hidden rounded-xl transition-all hover:scale-105">
+              <Image 
+                src="https://hushabye.in/cdn/shop/files/hushabay_logo.png" 
+                alt="Hushabye Logo" 
+                fill 
+                className="object-contain"
+                referrerPolicy="no-referrer"
+              />
+            </div>
+          </Link>
+        </div>
+
+        {/* Right: Icons */}
+        <div className="flex-1 flex justify-end items-center gap-1 md:gap-2">
           <button className={cn(
             "p-2 md:p-3 rounded-full transition-colors",
             isTransparent ? "text-white hover:bg-white/10" : "hover:bg-primary/5 text-foreground/70"

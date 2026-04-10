@@ -18,6 +18,7 @@ export default function CheckoutPage() {
   const { user } = useAuthStore();
   const [step, setStep] = useState(1);
   const [loading, setLoading] = useState(false);
+  const [emailError, setEmailError] = useState('');
   const [formData, setFormData] = useState({
     fullName: user?.full_name || '',
     email: user?.email || '',
@@ -34,6 +35,22 @@ export default function CheckoutPage() {
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
+    if (name === 'email') setEmailError('');
+  };
+
+  const validateEmail = (email: string) => {
+    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return re.test(email);
+  };
+
+  const handleNextStep = () => {
+    if (step === 1) {
+      if (!validateEmail(formData.email)) {
+        setEmailError('Please enter a valid email address');
+        return;
+      }
+    }
+    setStep(step + 1);
   };
 
   const handlePayment = async () => {
@@ -190,8 +207,9 @@ export default function CheckoutPage() {
                       value={formData.email}
                       onChange={handleInputChange}
                       placeholder="john@example.com" 
-                      className="w-full rounded-lg border-slate-200 focus:border-primary focus:ring-primary" 
+                      className={`w-full rounded-lg border-slate-200 focus:border-primary focus:ring-primary ${emailError ? 'border-red-500 ring-red-500' : ''}`} 
                     />
+                    {emailError && <p className="text-xs text-red-500 mt-1">{emailError}</p>}
                   </div>
                   <div className="space-y-2">
                     <label className="text-sm font-medium text-slate-700 flex items-center gap-2">
@@ -207,7 +225,7 @@ export default function CheckoutPage() {
                     />
                   </div>
                   <div className="flex items-end">
-                    <Button onClick={() => setStep(2)} className="w-full rounded-lg h-11">Next Step</Button>
+                    <Button onClick={handleNextStep} className="w-full rounded-lg h-11">Next Step</Button>
                   </div>
                 </div>
               )}
@@ -275,7 +293,7 @@ export default function CheckoutPage() {
                       />
                     </div>
                     <div className="flex items-end">
-                      <Button onClick={() => setStep(3)} className="w-full rounded-lg h-11">Next Step</Button>
+                      <Button onClick={handleNextStep} className="w-full rounded-lg h-11">Next Step</Button>
                     </div>
                   </div>
                 </div>

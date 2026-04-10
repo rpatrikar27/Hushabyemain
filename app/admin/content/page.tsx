@@ -1,6 +1,7 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
+import { useSearchParams, useRouter } from 'next/navigation';
 import seedData from '@/src/data/seed.json';
 import { supabase } from '@/src/lib/supabase';
 import { 
@@ -16,35 +17,50 @@ import {
 } from 'lucide-react';
 import Image from 'next/image';
 
-export default function AdminContent() {
-  const [activeTab, setActiveTab] = useState<'banners' | 'widgets'>('banners');
+function ContentManager() {
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const tabParam = searchParams.get('tab') as 'banners' | 'widgets' | null;
+  
+  const [activeTab, setActiveTab] = useState<'banners' | 'widgets'>(tabParam || 'banners');
   const [banners, setBanners] = useState<any[]>(seedData.banners);
   const [widgets, setWidgets] = useState<any[]>(seedData.widgets || []);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
+    if (tabParam && tabParam !== activeTab) {
+      setActiveTab(tabParam);
+    }
+  }, [tabParam, activeTab]);
+
+  useEffect(() => {
+    const fetchContent = async () => {
+      setIsLoading(true);
+      try {
+        const [
+          { data: dbBanners },
+          { data: dbWidgets }
+        ] = await Promise.all([
+          supabase.from('banners').select('*'),
+          supabase.from('widgets').select('*')
+        ]);
+
+        if (dbBanners && dbBanners.length > 0) setBanners(dbBanners);
+        if (dbWidgets && dbWidgets.length > 0) setWidgets(dbWidgets);
+      } catch (error) {
+        console.error('Error fetching content:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
     fetchContent();
   }, []);
 
-  async function fetchContent() {
-    setIsLoading(true);
-    try {
-      const [
-        { data: dbBanners },
-        { data: dbWidgets }
-      ] = await Promise.all([
-        supabase.from('banners').select('*'),
-        supabase.from('widgets').select('*')
-      ]);
-
-      if (dbBanners && dbBanners.length > 0) setBanners(dbBanners);
-      if (dbWidgets && dbWidgets.length > 0) setWidgets(dbWidgets);
-    } catch (error) {
-      console.error('Error fetching content:', error);
-    } finally {
-      setIsLoading(false);
-    }
-  }
+  const handleTabChange = (tab: 'banners' | 'widgets') => {
+    setActiveTab(tab);
+    router.push(`/admin/content?tab=${tab}`);
+  };
 
   async function deleteBanner(id: string) {
     if (!confirm('Are you sure you want to delete this banner?')) return;
@@ -77,13 +93,13 @@ export default function AdminContent() {
       <div className="flex items-center justify-between">
         <div className="flex p-1 bg-slate-100 rounded-xl">
           <button 
-            onClick={() => setActiveTab('banners')}
+            onClick={() => handleTabChange('banners')}
             className={`px-6 py-2 text-sm font-bold rounded-lg transition-all ${activeTab === 'banners' ? 'bg-white text-primary shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}
           >
             Banners
           </button>
           <button 
-            onClick={() => setActiveTab('widgets')}
+            onClick={() => handleTabChange('widgets')}
             className={`px-6 py-2 text-sm font-bold rounded-lg transition-all ${activeTab === 'widgets' ? 'bg-white text-primary shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}
           >
             Widgets
@@ -184,5 +200,17 @@ export default function AdminContent() {
         </div>
       )}
     </div>
+  );
+}
+
+export default function AdminContent() {
+  return (
+    <Suspense fallback={
+      <div className="flex h-96 items-center justify-center">
+        <Loader2 className="h-8 w-8 animate-spin text-primary" />
+      </div>
+    }>
+      <ContentManager />
+    </Suspense>
   );
 }

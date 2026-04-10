@@ -2,11 +2,13 @@
 
 import Link from 'next/link';
 import Image from 'next/image';
-import { usePathname } from 'next/navigation';
+import { usePathname, useSearchParams } from 'next/navigation';
+import { Suspense } from 'react';
 import { 
   LayoutDashboard, 
   Package, 
   Image as ImageIcon, 
+  Layout,
   BarChart3, 
   Settings, 
   LogOut,
@@ -19,14 +21,28 @@ import { cn } from '@/src/lib/utils';
 const sidebarLinks = [
   { name: 'Dashboard', href: '/admin', icon: LayoutDashboard },
   { name: 'Listings (SEO)', href: '/admin/products', icon: Package },
-  { name: 'Banners & Widgets', href: '/admin/content', icon: ImageIcon },
+  { name: 'Banners', href: '/admin/content?tab=banners', icon: ImageIcon },
+  { name: 'Widgets', href: '/admin/content?tab=widgets', icon: Layout },
   { name: 'Meta Ads Manager', href: '/admin/meta-ads', icon: Megaphone },
   { name: 'Live Analytics', href: '/admin/analytics', icon: BarChart3 },
   { name: 'Settings', href: '/admin/settings', icon: Settings },
 ];
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
+  return (
+    <Suspense fallback={
+      <div className="flex h-screen w-screen items-center justify-center bg-slate-50">
+        <div className="h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent"></div>
+      </div>
+    }>
+      <AdminLayoutContent>{children}</AdminLayoutContent>
+    </Suspense>
+  );
+}
+
+function AdminLayoutContent({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
+  const searchParams = useSearchParams();
 
   return (
     <div className="flex min-h-screen bg-slate-50">
@@ -42,7 +58,9 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
           <nav className="flex-1 space-y-1 px-4 py-6">
             {sidebarLinks.map((link) => {
-              const isActive = pathname === link.href;
+              const [hrefPath, hrefQuery] = link.href.split('?');
+              const isActive = pathname === hrefPath && (!hrefQuery || searchParams.toString().includes(hrefQuery));
+              
               return (
                 <Link
                   key={link.name}
@@ -76,7 +94,10 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         <header className="sticky top-0 z-30 flex h-20 items-center justify-between border-b bg-white/80 px-8 backdrop-blur-md">
           <div className="flex items-center gap-4">
             <h1 className="text-xl font-bold text-slate-900">
-              {sidebarLinks.find(l => l.href === pathname)?.name || 'Admin'}
+              {sidebarLinks.find(link => {
+                const [hrefPath, hrefQuery] = link.href.split('?');
+                return pathname === hrefPath && (!hrefQuery || searchParams.toString().includes(hrefQuery));
+              })?.name || 'Admin'}
             </h1>
           </div>
           

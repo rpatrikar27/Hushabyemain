@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 import { useState } from 'react';
-import { Star, ShoppingCart, ShieldCheck, Heart, Info, ChevronRight } from 'lucide-react';
+import { Star, ShoppingCart, ShieldCheck, Heart, Info, ChevronRight, ChevronDown } from 'lucide-react';
 import { motion } from 'motion/react';
 import Header from '@/src/components/layout/Header';
 import Footer from '@/src/components/layout/Footer';
@@ -18,6 +18,7 @@ interface ProductContentProps {
 export default function ProductContent({ product }: ProductContentProps) {
   const addItem = useCartStore((state) => state.addItem);
   const [quantity, setQuantity] = useState(1);
+  const [openSection, setOpenSection] = useState<string | null>('description');
 
   const discount = product.compare_at_price 
     ? Math.round(((product.compare_at_price - product.price) / product.compare_at_price) * 100)
@@ -123,21 +124,6 @@ export default function ProductContent({ product }: ProductContentProps) {
               {product.short_description || product.description}
             </p>
 
-            {/* Attributes */}
-            {product.attributes && product.attributes.length > 0 && (
-              <div className="space-y-3">
-                <span className="text-sm font-bold text-slate-900 uppercase tracking-wider">Specifications</span>
-                <div className="grid grid-cols-2 gap-4">
-                  {product.attributes.map((attr: any, idx: number) => (
-                    <div key={idx} className="flex flex-col p-3 rounded-lg bg-slate-50 border">
-                      <span className="text-xs text-slate-500">{attr.key}</span>
-                      <span className="font-semibold text-slate-800">{attr.value}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-
             {/* Quantity and Add to Cart */}
             <div className="flex flex-col sm:flex-row gap-4 pt-4">
               <div className="flex items-center border rounded-full px-4 py-2 w-fit">
@@ -190,13 +176,57 @@ export default function ProductContent({ product }: ProductContentProps) {
           </div>
         </div>
 
-        {/* Tabs / Detailed Description */}
+        {/* Accordion Sections */}
         <div className="mt-16 pt-16 border-t">
-          <div className="max-w-3xl mx-auto">
-            <h2 className="text-2xl font-bold mb-6">Product Description</h2>
-            <div className="prose prose-slate max-w-none text-slate-600">
-              {product.description}
+          <div className="max-w-3xl mx-auto space-y-4">
+            {/* Description Accordion */}
+            <div className="border rounded-2xl overflow-hidden bg-white shadow-sm">
+              <button 
+                onClick={() => setOpenSection(openSection === 'description' ? null : 'description')}
+                className="w-full flex items-center justify-between p-6 text-left hover:bg-slate-50 transition-colors"
+              >
+                <h2 className="text-xl font-bold text-slate-900">Product Description</h2>
+                <ChevronDown className={`h-5 w-5 text-slate-500 transition-transform duration-300 ${openSection === 'description' ? 'rotate-180' : ''}`} />
+              </button>
+              <motion.div 
+                initial={false}
+                animate={{ height: openSection === 'description' ? 'auto' : 0 }}
+                className="overflow-hidden"
+              >
+                <div className="p-6 pt-0 prose prose-slate max-w-none text-slate-600">
+                  {product.description}
+                </div>
+              </motion.div>
             </div>
+
+            {/* Specifications Accordion */}
+            {product.attributes && product.attributes.length > 0 && (
+              <div className="border rounded-2xl overflow-hidden bg-white shadow-sm">
+                <button 
+                  onClick={() => setOpenSection(openSection === 'specs' ? null : 'specs')}
+                  className="w-full flex items-center justify-between p-6 text-left hover:bg-slate-50 transition-colors"
+                >
+                  <h2 className="text-xl font-bold text-slate-900">Specifications</h2>
+                  <ChevronDown className={`h-5 w-5 text-slate-500 transition-transform duration-300 ${openSection === 'specs' ? 'rotate-180' : ''}`} />
+                </button>
+                <motion.div 
+                  initial={false}
+                  animate={{ height: openSection === 'specs' ? 'auto' : 0 }}
+                  className="overflow-hidden"
+                >
+                  <div className="p-6 pt-0">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                      {product.attributes.map((attr: any, idx: number) => (
+                        <div key={idx} className="flex justify-between p-3 rounded-lg bg-slate-50 border text-sm">
+                          <span className="text-slate-500">{attr.key}</span>
+                          <span className="font-bold text-slate-800">{attr.value}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </motion.div>
+              </div>
+            )}
           </div>
         </div>
       </main>

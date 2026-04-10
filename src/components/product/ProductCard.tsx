@@ -39,29 +39,31 @@ export default function ProductCard({ product }: ProductCardProps) {
           className="object-contain p-8 transition-transform duration-700 group-hover:scale-110"
           referrerPolicy="no-referrer"
         />
-        <div className="absolute inset-0 bg-black/0 transition-colors duration-500 group-hover:bg-black/5" />
+        
+        {/* Subtle Overlay */}
+        <div className="absolute inset-0 bg-black/20 opacity-0 transition-opacity duration-300 group-hover:opacity-100 flex items-center justify-center">
+          <button 
+            onClick={(e) => {
+              e.preventDefault();
+              addItem({
+                id: product.id,
+                name: product.name,
+                price: product.price,
+                quantity: 1,
+                image: product.images[0]?.url,
+              });
+            }}
+            className="bg-white text-primary px-6 py-3 rounded-full font-bold text-sm uppercase tracking-widest shadow-xl transform translate-y-4 transition-all duration-300 group-hover:translate-y-0 hover:bg-primary hover:text-white"
+          >
+            Add to Cart
+          </button>
+        </div>
         
         {discount > 0 && (
           <div className="absolute top-4 left-4 rounded-full bg-white/90 backdrop-blur-sm px-3 py-1 text-[10px] font-bold uppercase tracking-widest text-destructive shadow-sm">
             {discount}% OFF
           </div>
         )}
-
-        <button 
-          onClick={(e) => {
-            e.preventDefault();
-            addItem({
-              id: product.id,
-              name: product.name,
-              price: product.price,
-              quantity: 1,
-              image: product.images[0]?.url,
-            });
-          }}
-          className="absolute bottom-4 right-4 flex h-12 w-12 items-center justify-center rounded-full bg-white text-primary shadow-lg transition-all duration-300 hover:scale-110 active:scale-95 opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0"
-        >
-          <ShoppingCart className="h-5 w-5" />
-        </button>
       </Link>
       
       <div className="mt-6 space-y-2 px-2">
