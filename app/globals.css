@@ -1,48 +1,14 @@
-@import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-@theme {
-  --color-primary: #108474; /* Hushabye Teal */
-  --color-primary-foreground: #ffffff;
-  --color-secondary: #1d3686; /* Hushabye Deep Blue */
-  --color-accent: #fbcd0a; /* Hushabye Yellow */
-  --color-destructive: #d63031;
-  --color-muted: #f3f4f6;
-  --color-muted-foreground: #6b7280;
-  --color-background: #ffffff;
-  --color-foreground: #1a1a1a;
-  --color-card: #ffffff;
-  --color-border: #e5e7eb;
-  
-  --font-sans: var(--font-sans);
-  --font-display: var(--font-display);
-  --font-serif: var(--font-serif);
-  
-  --radius-xl: 2rem;
-  --radius-lg: 1.5rem;
-  --radius-md: 1rem;
-  --radius-sm: 0.5rem;
+:root {
+  --foreground-rgb: 0, 0, 0;
+  --background-start-rgb: 214, 219, 220;
+  --background-end-rgb: 255, 255, 255;
 }
 
-@layer base {
-  body {
-    @apply bg-background text-foreground antialiased font-sans selection:bg-primary/20 selection:text-primary;
-  }
-  
-  h1, h2, h3, h4, h5, h6 {
-    @apply font-display font-medium tracking-tight;
-  }
-}
-
-@layer utilities {
-  .glass {
-    @apply bg-white/70 backdrop-blur-md border border-white/20;
-  }
-  
-  .text-balance {
-    text-wrap: balance;
-  }
-}
-
-.container {
-  @apply mx-auto max-w-7xl px-4 sm:px-6 lg:px-8;
+body {
+  color: rgb(var(--foreground-rgb));
+  background: white;
 }

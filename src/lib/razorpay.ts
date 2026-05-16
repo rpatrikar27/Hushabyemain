@@ -1,34 +1,20 @@
-export const loadRazorpay = () => {
-  return new Promise((resolve) => {
-    const script = document.createElement('script');
-    script.src = 'https://checkout.razorpay.com/v1/checkout.js';
-    script.onload = () => {
-      resolve(true);
-    };
-    script.onerror = () => {
-      resolve(false);
-    };
-    document.body.appendChild(script);
-  });
-};
+import Razorpay from 'razorpay';
 
-export const createRazorpayOrder = async (amount: number, currency: string = 'INR') => {
-  try {
-    const response = await fetch('/api/razorpay/order', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ amount, currency }),
-    });
+let razorpayInstance: Razorpay | null = null;
 
-    if (!response.ok) {
-      throw new Error('Failed to create Razorpay order');
+export function getRazorpay() {
+  if (!razorpayInstance) {
+    const keyId = process.env.RAZORPAY_KEY_ID;
+    const keySecret = process.env.RAZORPAY_KEY_SECRET;
+
+    if (!keyId || !keySecret) {
+      throw new Error('RAZORPAY_KEY_ID or RAZORPAY_KEY_SECRET is not set');
     }
 
-    return await response.json();
-  } catch (error) {
-    console.error('Error creating Razorpay order:', error);
-    throw error;
+    razorpayInstance = new Razorpay({
+      key_id: keyId,
+      key_secret: keySecret,
+    });
   }
-};
+  return razorpayInstance;
+}
