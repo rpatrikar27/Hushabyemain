@@ -117,7 +117,7 @@ export default function CollectionContent({ slug, category, products }: Collecti
               onClick={() => setIsMobileFilterOpen(false)}
               className={cn(
                 "hover:text-primary transition-colors",
-                slug === 'all' ? 'text-primary font-bold' : ''
+                slug.toLowerCase() === 'all' ? 'text-primary font-bold' : ''
               )}
             >
               All Products
@@ -130,7 +130,7 @@ export default function CollectionContent({ slug, category, products }: Collecti
                 onClick={() => setIsMobileFilterOpen(false)}
                 className={cn(
                   "hover:text-primary transition-colors",
-                  slug === cat.slug ? 'text-primary font-bold' : ''
+                  slug.toLowerCase() === cat.slug.toLowerCase() ? 'text-primary font-bold' : ''
                 )}
               >
                 {cat.name}

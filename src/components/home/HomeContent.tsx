@@ -39,8 +39,21 @@ export default function HomeContent() {
           supabase.from('widgets').select('*')
         ]);
 
-        if (dbProducts && dbProducts.length > 0) setProducts(dbProducts);
-        if (dbCategories && dbCategories.length > 0) setCategories(dbCategories);
+        if (dbProducts && dbProducts.length > 0) {
+          const normalizedProducts = dbProducts.map((prod: any) => ({
+            ...prod,
+            slug: prod.slug || prod.name?.toLowerCase().replace(/\s+/g, '-') || prod.id
+          }));
+          setProducts(normalizedProducts);
+        }
+        if (dbCategories && dbCategories.length > 0) {
+          // Normalize slugs and ensure every category from DB has one derived from name if missing
+          const normalizedCategories = dbCategories.map((cat: any) => ({
+            ...cat,
+            slug: cat.slug || cat.name?.toLowerCase().replace(/\s+/g, '-') || cat.id
+          }));
+          setCategories(normalizedCategories);
+        }
         if (dbBanners && dbBanners.length > 0) {
           setBanners(dbBanners.filter((b: any) => b.position === 'hero'));
           setSmallBanners(dbBanners.filter((b: any) => b.position === 'small'));
@@ -237,7 +250,7 @@ export default function HomeContent() {
                 transition={{ delay: idx * 0.1 }}
               >
                 <Link 
-                  href={`/collections/${category.slug}`}
+                  href={`/collections/${category.slug || category.id}`}
                   className="group flex flex-col items-center gap-4 text-center"
                 >
                   <div className="relative h-32 w-32 md:h-40 md:w-40 overflow-hidden rounded-[2.5rem] bg-accent/50 transition-all duration-500 group-hover:rounded-full group-hover:shadow-xl">
